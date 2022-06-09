@@ -1,5 +1,6 @@
 <meta charset="utf-8" />
 <meta content="width=device-width, height=device-height, initial-scale=1" name="viewport" />
+<link rel="shortcut icon" href="#">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 <style type="text/css">
 	body{ font-size: 24pt;}
@@ -577,7 +578,7 @@
 		document.getElementById('setuplist').innerHTML += ("<p><b>Browser Zoom: </b>" + (screenPixelRatio * 100.0).toFixed(2)
 		+ (isAtDefaultZoom ? "% <span style='color:green'>✔</span>"
 		: "% <i class=\"material-icons\" style='color:red' >report_problem</i>"
-		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> Zoom in/out is detected. Please set the zoom of your brower to 100%. You can do so by clicking the setting of your browers. <BR> Example for Chrome : <BR> <img src='img/browser.png'/></crowd-modal>"));
+		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> Zoom in/out is detected. Please set the zoom of your brower to 100%. You can do so by clicking the setting of your browers. <BR> Example for Chrome : <BR> <img src='https://kckwan-stippling-data.s3.amazonaws.com/img/browser.png'/></crowd-modal>"));
 		
 		if(isAtDefaultZoom && isResolutionOK){
 			document.getElementById('setupNextButton').disabled = false;
