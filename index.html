@@ -1,775 +1,1084 @@
-<!DOCTYPE html>
-<html>
-	
-    
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">   
-		<meta name="google-site-verification" content="1Nk-VQfCAo-lXKQHrwgqw8Aldjq2p5daCfYGFCRADWo" />
-		<title>KC Kwan's Personal Webpage</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="shortcut icon" type="image/x-icon" href="#">
-    </head>
-    
-    <body>
-        <div class="home_main" id="kc">
-			<div class="intro_box">
-					<!---Hello! 你好! こにちは！Guten Tag!--->
-					<div class="left">
-						<div class="home_name">
-								<p class = "myname"> 
-									KWAN, Kin Chung (KC) <br>
-									關健聰 かんけんそう</p>
-								<p class = "mydegree">B.Sc., Ph.D (Computer Science, CUHK) </p>
-						</div>
-						<div class="home_intro">
-								<p> 
-									I am a researcher in Computer Graphics and a Ph.D. in Computer Science from the Chinese University of Hong Kong in 2015. My research experience is in the field of Non-Photorealistic computer graphics (NPR), VR and AR as well as human-computer interaction (HCI). I published multiple technical research papers in top conferences and journals such as SIGGRAPH (Asia), TVCG, CGF, and CHI. 
-									<br><br>
-									Currently I am working at <a class="better" href="https://www.uni-konstanz.de/en/" target="_blank">Univeristy of Konstanz</a> (Germany) within the DFG-funded collaborative research group "Quantitative Methods for Visual Computing" <a class="better" href="https://www.sfbtrr161.de/" target="_blank">(SFB-TRR 161)</a>.
-								</p>
-							</div>
-					</div>
-					<div class="right">
-						<img src="img/photo/KC2.jpg"/>
-					</div>
-					<div class="mobile">
-						<p style="text-align: center;font-size:4vw;margin-bottom: 0pt">
-							<a class="better" href="https://www.uni-konstanz.de/en/" target="_blank">University of Konstanz</a>
-						</p>
-					</div>
-			</div>
-		</div>
+<meta charset="utf-8" />
+<meta content="width=device-width, height=device-height, initial-scale=1" name="viewport" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style type="text/css">
+	body{ font-size: 24pt;}
+	html, body, #wrapper {
+      height:100%;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-align: center;
+    }
+    #wrapper {
+      margin: 0 auto;
+      text-align: left;
+      vertical-align: middle;
+      width: 400px;
+    }
+	div.firstpage, div.page{
+		height:80%;
+		margin-top:auto;
+		margin-bottom:auto;
+	}
+	div.page { display:none;}
+	div.example { 
+		width: 60%;
+		background-color:#808080;
+		margin-top: 10pt;
+		margin-bottom: 50pt;
+		border: 3px solid #000000;
+		color:#FFFFFF;
+	}
+	h1 { background-color:#70C5E8}
+	button.answer { 
+		width:auto;
+		margin-top: 10pt;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		font-size: 30px;
+	}
+	button.large, div.largeButton * { 
+		width:60%;
+		height: 80pt;
+		margin-top: 20pt;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		font-size: 30px;
+	}
+	h1 { margin-top:100pt;}
+	crowd-input { font-size: 30px; }
+</style>
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<script>
+	//Study setting
+	var TASK_NUM = 20;
+	var REST_TIME = 2000;
+	var QUESTION_NUM_BEFORE_REST = 10;
+	var MIN_MON_INCH = 17;
+	var MIN_MON_RES_W = 800;
+	var MIN_MON_RES_H = 600;
+	var SMALL_BAR_MOVE = 1;
+	var LARGE_BAR_MOVE = 10;
+	var fixedAnsQuestion = [2,5,7];
+	var methodnames = [ 'color', 'hex', 'hexinvert', 'lloyd', 'lloydinvert','dithering']; 
+	var sizelist = [ 3,4,5,6,8,12,17,24];
+	var orilist = [ 0, 15, 30, 45 ];
+	var intensityNum = 10;
+	var minIntensity = 20;
+	var intensityStep = 21;
+	var filepath = 'https://kckwan-stippling-data.s3.amazonaws.com/data/stipple_';
+	//var filepath = '../data/stipple_';
+</script>
 
-        <div class ="header">
-            <ul class="menubar">
-                <li><a href="#kc">KC Kwan </a></li>
-                <li><a href="#news_anchor">News</a></li>
-                <li><a href="#profile_anchor">Profile</a></li>
-                <li><a href="#paper_anchor">Papers</a></li>
-                <li><a href="#activity_anchor">Activity</a></li>
-<!--				<li><a href="#hobby_anchor">Hobby</a></li>-->
-<!--				<li><a href="#resources_anchor">Resources</a></li>-->
-                <li><a href="#link_anchor">Links</a></li>
-                <!--<li><a href="#contact_anchor">Contact</a></li>-->
-                <!-- <li style="float: right">Last update: 20 Apr 2020</li> -->
-                <!-- <li style="float: right" id="back_button" ><a href="#" onclick="load_Paper_Page('home.html')">Back</a></li> -->
-            </ul>
-        </div>
+<!--HTML Page-->
+<div class="firstpage" id="mainBody">
+	<crowd-form>
 	
-		<div class="mobile">
+		<!--To store MTurk Answer-->
+		<div id="questionlist">&nbsp;</div>
+		
+		<!--Introduction-->
+		<div id="introduction">
 			<center>
-			<img style="width:50%;margin-top:50px;" src="img/photo/qrcode.png">
+				<h1>Intensity Perception Study</h1>
+				<h2>Instruction</h2>
+				<p style="width:80%;text-align:center">
+					Welcome to our study! <BR>
+					In this study, you will need to compare pairs of images and tell which one is brighter. Try your best to answer one side even if you cannot distinguish them.  <BR>
+					You will need to answer 100 questions; each of them may spend you 3~6 seconds. <BR>
+					The time is recorded. Please answer the questions as soon as possible. <BR>
+					After answering one question, the image will disappear for 2 seconds for you to rest your eyes. <BR> 
+					There are breaks for you to rest after certain questions. <BR> 
+					Some questions may have default answers. Answering them wrongly may cause your answer unaccepted. <BR>
+					If you have any questions, feel free to send me an email (kin-chung.kwan@uni-konstanz.de). <BR>
+					<BR>
+					Requirement: A 17+ inch monitor with 800x600 resolution or above.
+				</p>
+				<div class="example">
+					<p>Example Question</p>
+						<div style="width: 100%; display: table;margin-bottom:20pt;">
+							<div style="display: table-row">
+								<div style="width: 50%; display: table-cell">
+									<center>
+										<div style="width:min(80%,300pt);height:0;padding-bottom:min(80%,300pt);background-color:#333333">&nbsp;</div>
+									</center>
+								</div>
+								<div style="display: table-cell">
+									<center>
+										<div style="width:min(80%,300pt);height:0;padding-bottom:min(80%,300pt);background-color:#999999">&nbsp;</div>
+									</center>
+								</div>
+						</div>
+						<div style="display: table-row">
+							<div style="display: table-cell">
+								<center><button class="answer" type="button">Left is brighter</button></center>
+							</div>
+							<div style="display: table-cell">
+								<center><button class="answer" type="button">Right is brighter</button></center>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p><b style="color:red">* CAUTION: You may lose the progress if you refresh, back page, or close the brower! *</b></p>
+				<button class="large" onclick="introEnd()" type="button">Next!</button>
 			</center>
 		</div>
+		
+		<!--Set up screen-->
+		<div class="page" id="setup1" style="margin-top:100pt">
+			<center>
+				<h1>Intensity Perception Study</h1>
+				<h2>Configuration</h2>
+					<p style="width:80%">
+						To perform this online study, you need to tell us your your computer setting.<br />
+						Now, please <b>maximum</b> your brower by the &#39;Maximize&#39; button on the top of your browers and then input the following information: <crowd-input id="mon_model" label="Your monitor model" name="mon_model"></crowd-input>
+					</p>
+				<table style="width:80%">
+					<tbody>
+						<tr>
+									<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" label="Your monitor size in inch (diagonally)" max-length="3" name="mon_size"></crowd-input></td>
+							<td>:</td>
+							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w" label="Your monitor resolution (Width)" max-length="5" name="mon_res_w"></crowd-input></td>
+							<td>x</td>
+							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_h" label="Your monitor resolution (Height)" max-length="5" name="mon_res_h"></crowd-input></td>
+							<td style="width:13%;padding-left:2%;padding-right:2%;"><crowd-modal link-text="How to know?" link-type="button">
+							<h2>How to know your monitor resolution</h2>
+							For <select name="os" onchange="osChange(this.value, 'hints1')"><option value="win">Windows</option><option value="mac">Mac</option></select>
 
+							<div id="win_hints1">
+							<ol>
+								<li>Right click an empty space in your desktop.</li>
+								<li>Select &quot;Display settings&quot; in the menu.</li>
+								<li>Look for &quot;Resolution&quot;</li>
+							</ol>
 
-        <div class="content" style="width:100%">
-			<a class="anchor" id="news_anchor"></a>
-            <h1 id="news"><span> What's New</span></h1>
-            <div class="section">
-                <table class="news">
-					<tr>
-                        <td class="c1"><span class="newdatenew">Dec 2021</span></td>
-                        <td class="c2">One paper has been accepted by Computational Visual Media (CVM) and recommended for publication in CVMJ.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdatenew">Oct 2021</span></td>
-                        <td class="c2">One short paper has been accepted by SIGGRAPH Asia 2021 technical communcition.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdatenew">Sep 2021</span></td>
-                        <td class="c2">Our inverted stippling paper has been accepted by SIGGRAPH Asia 2021.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate2">Aug 2021</span></td>
-                        <td class="c2">This webpage is online in github page now.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate2">Dec 2020</span></td>
-                        <td class="c2">Our AR Draw paper has been accepted by TVCG, and will be presented in IEEE VR 2021.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate2">Dec 2020</span></td>
-                        <td class="c2">Our checkpoint selection paper has been accepted by CGF.</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate2">Sep 2020</span></td>
-                        <td class="c2">I moved to Konstanz, Germany! What a nice place!</td>
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate2">Apr 2020</span></td>
-                        <td class="c2">I will join the University of Konstanz, Germany and the SFB-TRR 161.</td>
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate2">Mar 2020</span></td>
-                        <td> Our ARAnimator paper has been conditionally accepted by SIGGRAPH 2020.</td>
-                    </tr>
-                </table>
-                <div style="height:20pt"></div>
-            </div>
-            
-            
-            <a class="anchor" id="profile_anchor"></a>
-            <h1 id="profile"><span> Profile</span></h1>
-            <div class="section">
-				<div class = "mobile">
-					<h2 class="first">Who am I?</h2>
-								<p style="text-align:justify;padding-right:10px"> 
-									I am a researcher in Computer Graphics and a Ph.D. in Computer Science from the Chinese University of Hong Kong in 2015. My research experience is in the field of Non-Photorealistic computer graphics (NPR), VR and AR as well as human-computer interaction (HCI). I published multiple technical research papers in top conferences and journals such as SIGGRAPH (Asia), TVCG, CGF, and CHI. <BR>
-									Currently I am working at <a class="better" href="https://www.uni-konstanz.de/en/" target="_blank">Univeristy of Konstanz</a> (Germany) within the DFG-funded collaborative  research group "Quantitative Methods for Visual Computing" <a class="better" href="https://www.sfbtrr161.de/" target="_blank">(SFB-TRR 161)</a>.
-								</p>
-				</div>
-				<div style="height:50pt"></div>
-                <h2 class="first">Academic Experiences</h2>
-                <table class="edutable">
-                    <tr>
-                        <td class="c1"><span class="newdate">2020 - now</span></td>
-                        <td class="c2"> 
-						<div class="pc"><i><b>Postdoctoral Research Assistant</b></i> in University of Konstanz, Germany <a class="better" href="https://www.uni-konstanz.de/en" target="_blank">Uni-Konstanz</a> <br>
-                        Supervisor: <a class="better" href="https://www.cgmi.uni-konstanz.de/en/persons/prof-dr-oliver-deussen/" target="_blank">Prof. Oliver Deussen </a></div>
-						<div class="mobile"><i><b>Postdoctoral Research Assistant</b></i> <br> <a class="better" href="https://www.uni-konstanz.de/en" target="_blank">University of Konstanz</a></div>
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><span class="newdate">2018 - 2020</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Senior Research Assistant</b></i> in City University of Hong Kong, Hong Kong <a class="better" href="https://www.cityu.edu.hk/" target="_blank">CityU</a></div>
-							<div class="mobile"><i><b>Senior Research Assistant</b></i> <br> <a class="better" href="https://www.cityu.edu.hk/" target="_blank">City University of Hong Kong</a></div>
-						</td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><span class="newdate">2017 - 2018</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Postdoctoral Research Assistant</b></i> in City University of Hong Kong, Hong Kong <a class="better" href="https://www.cityu.edu.hk/" target="_blank">CityU</a> <br> Supervisor: <a class="better" href="http://sweb.cityu.edu.hk/hongbofu/" target="_blank">Prof. Hongbo Fu</a></div>
-							<div class="mobile"><i><b>Postdoctoral Research Assistant</b></i> <br> <a class="better" href="https://www.cityu.edu.hk/" target="_blank">City University of Hong Kong</a></div>
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><span class="newdate">2015 - 2017</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Research Fellow</b></i> in Caritas Institute of Higher Education, Hong Kong <a class="better" href="https://www.cihe.edu.hk/" target="_blank">CIHE</a>  </div>
-							<div class="mobile"><i><b>Research Fellow</b></i> <br> <a class="better" href="https://www.cihe.edu.hk/" target="_blank">Caritas Institute of Higher Education</a></div>
-						</td>
-							
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate">2014 - 2015</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Research Assistant</b></i> in Caritas Institute of Higher Education, Hong Kong <a class="better" href="https://www.cihe.edu.hk/" target="_blank">CIHE</a>  <br>Supervisor: <a class="better" href="http://www.raymond-pang.com/" target="_blank">Dr. Wai Man Pang (Raymond)</a></div>
-							<div class="mobile"><i><b>Research Assistant</b></i> <br> <a class="better" href="https://www.cihe.edu.hk/" target="_blank">Caritas Institute of Higher Education</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate">2013 - 2014</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Research Assistant</b></i> in Chinese University of Hong Kong, Hong Kong <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">CUHK</a> </div>
-							<div class="mobile"><i><b>Research Assistant</b></i> <br> <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">Chinese University of Hong Kong</a></div>
-						</td>
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate">2009 - 2015</span></td>
-                        <td class="c2"> 
-							<div class ="pc"><i><b>Ph.D.</b></i> in Computer Science and Engineering, Chinese University of Hong Kong, Hong Kong <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">CUHK</a> <br> Supervisor: <a class="better" href="https://www.cse.cuhk.edu.hk/~ttwong/" target="_blank">Prof. Tien-Tsin Wong (TT)</a> </div>
-							<div class="mobile"><i><b>Ph.D.</b></i> in Computer Science and Engineering <br> <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">Chinese University of Hong Kong</a>.</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="c1"><span class="newdate">2006 - 2009</span></td>
-                        <td class="c2">
-							<div class ="pc"><i><b>B.Sc.</b></i> in Computer Science, Chinese University of Hong Kong, Hong Kong <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">CUHK</a></div>
-							<div class="mobile"><i><b>B.Sc.</b></i> in Computer Science <br> <a class="better" href="https://www.cuhk.edu.hk/" target="_blank">Chinese University of Hong Kong</a>.</div>
-						</td>
-                    </tr>
-                
-                </table>
-                <div style="height:50pt"></div>
-                <h2 class="other">My Information</h2>
-                <table class="myinfotable">
-					<tr>
-						<td class="c1">Email:</td>
-						<td> <img style="height:min(20px,3.5vw)" src="img/photo/email.png" /> </td>
-					</tr>
-					<tr>
-						<td class="c1">Phone (DE):</td>
-						<td> <img style="height:min(15px,2.5vw)" src="img/photo/de_phone_num.png" /> </td>
-					</tr>
-					<tr>
-						<td class="c1">Phone (HK):</td>
-						<td> <img style="height:min(15px,2.5vw)" src="img/photo/hk_phone_num.png" /></td>
-					</tr>
-					<tr>
-						<td class="c1">Office:</td>
-						<td>
-						Room 804, 8/F,  Building ZT, University of Konstanz<br>
-					</td>
-					<tr>
-						<td class="c1">Address:</td>
-						<td>
-						Universitätsstraße 10, 78457 Konstanz, Germany 
-						<a class="better" href="https://goo.gl/maps/KUZm1Et745pguh9d9" target="_blank">Google Maps</a>
-					</td>
-					</tr>
-					<tr>
-						<td class="c1">My CV:</td>
-						<td><a href="files/CV.pdf" target="_blank"><img class="icon" src="img/icon/PDF_32.png"/></a> Updated: Dec 2021</td>
-					</tr>
-					<tr>
-						<td class="c1">My Resume:</td>
-						<td><a href="files/Resume.pdf" target="_blank"><img class="icon" src="img/icon/PDF_32.png"/></a> Updated: Dec 2021</td>
-					</tr>
-					<tr>
-						<td class="c1" >Google Scholar:</td>
-						<td><a class="better" href="https://scholar.google.com/citations?hl=en&user=IxV7fuwAAAAJ" target="_blank">https://scholar.google.com/citations?hl=en&user=IxV7fuwAAAAJ</a></td>
-					</tr>
-					<tr>
-						<td class="c1" >Linkedln:</td>
-						<td><a class="better" href="https://www.linkedin.com/in/kckwan" target="_blank">www.linkedin.com/in/kckwan</a></td>
-					</tr>
-					<tr>
-						<td class="c1" >Language:</td>
-						<td>
-						<table class="">
-						<tr>
-							<td>Cantonese 廣東話</td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td>Native</td>
+							<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/resolutionhints.png" /></center>
+							</div>
+
+							<div id="mac_hints1" style="display:none">
+							<ol>
+								<li>Click the Mac icon at the top-left corner.</li>
+								<li>Click Display in the tag.</li>
+								<li>Look for the resolution.</li>
+							</ol>
+
+							<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/resolutionhints3.jpg" /></center>
+							</div>
+							</crowd-modal></td>
 						</tr>
-						<tr>
-							<td> Mandarin 普通话</td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="emptybox"></div> </td>
-							<td>Fluent</td>
-						</tr>
-						<tr>
-							<td>English</td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="emptybox"></div> </td>
-							<td>Fluent</td>
-						</tr>
-						<tr>
-							<td>Japanese 日本語</td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="emptybox"></div></td>
-							<td><div class="emptybox"></div> </td>
-							<td><div class="emptybox"></div> </td>
-							<td>Intermediate </td>
-						</tr>
-						<tr>
-							<td>German Deutsch</td>
-							<td><div class="filledbox"></div></td>
-							<td><div class="emptybox"></div> </td>
-							<td><div class="emptybox"></div> </td>
-							<td><div class="emptybox"></div> </td>
-							<td><div class="emptybox"></div> </td>
-							<td>Beginner</td>
-						</tr>
-						</table>
-						</td>
-					</tr>
-					
+					</tbody>
 				</table>
-             </div>
-            
-            <a class="anchor" id="paper_anchor"></a>
-            <h1 id="paper"><span> Publications</span></h1>
-			
-            <div class="section">
-				<h2>Selected List</h2>
+
+				<div id="mon_err" style="color:red">&nbsp;</div>
+				<button class="answer" id="monsetupButton" onclick="monInput()" style="width:100pt" type="button">Setup</button>
+
+				<div id="setuplist">&nbsp;</div>
+
+				<p>&nbsp;</p>
+
+				<table style="width:100%">
+					<tbody>
+						<tr>
+							<td>
+							<center><button class="large" id="setupBackButton" onclick="setupBack()" type="button">Back</button></center>
+							</td>
+							<td>
+							<center><button class="large" id="setupNextButton" onclick="setupEnd()" type="button">Next</button></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</center>
+		</div>
+		
+		<!--Set up image-->
+		<div class="page" id="setup2">
+			<center>
+				<h1>Intensity Perception Study</h1>
+
+				<h2>Configuration 2</h2>
+
+				<p style="width:80%">Now, please pick up your credit card from the pocket, and place it onto the monitor near the red bar. You need to set the red bar to the same length with the longest edge of your credit card.</p>
+
+				<div><crowd-modal link-text="How to put the card?" link-type="button">
+				<h2>How to put the card?</h2>
+
+				<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/instruction.png" style="width:100%" /></center>
+				</crowd-modal></div>
+
 				<center>
-				<div class ="selectedpaperlist">
-				<div class ="selectedpaper"><a href="#invertedstippling_anchor">
-						<img src="img/rep/invertedstippling_rep.png"/><br>
-						Inverted Stippling
-					</a></div>
-					<div class ="selectedpaper"><a href="#autocheckpoint_anchor">
-						<img src="img/rep/autocheckpoint_rep.png"/><br>
-						Image Checkpoint Selection
-					</a></div>
-					<div class ="selectedpaper"><a href="#ardraw_anchor">
-						<img src="img/rep/ardraw_rep.png"/><BR>
-						3D Curve Creation
-					</a></div>
-					<div class ="selectedpaper"><a href="#aranimator_anchor">
-						<img src="img/rep/aranimator_rep.png"/><br>
-						ARAnimator
-					</a></div>
-					<div class ="selectedpaper"><a href="#mobi_anchor">
-						<img " src="img/rep/mobi_rep.png"/><br>
-						Mobi3DSketch
-					</a></div>
-					<div class ="selectedpaper"><a href="#decomp_anchor">
-						<img src="img/rep/decomp_rep.png"/><br>
-						HW-decompressible Vertex
-					</a></div>
-					<div class ="selectedpaper"><a href="#pad_anchor">
-						<img src="img/rep/pad_rep.png"/><br>
-						Collage of Shapes
-					</a></div>
-				</div>
+				<table id="wrapper" style="height:85%;width:auto;border: 0">
+					<tbody>
+						<tr style="vertical-align: top;">
+							<td style="margin-left:100pt;width:30%">
+							<center>
+							<div id="bar" style="margin-top:30pt;margin-bottom:30pt;width:40pt;height:550px;background-color:red">&nbsp;</div>
+							</center>
+							</td>
+							<td style="width:30%">
+							<center>
+							<table style="vertical-align: top;margin-top:10%">
+								<tbody>
+									<tr>
+										<td><button onclick="barUp10()" type="button"><i class="material-icons" style="color:red">arrow_upward</i></button></td>
+										<td>Longer (Fast +10)</td>
+									</tr>
+									<tr>
+										<td><button onclick="barUp1()" type="button"><i class="material-icons" style="color:red">arrow_upward</i></button></td>
+										<td>Longer (Slow +1)</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+										<div style="margin-top:5pt;margin-bottom:25pt;width:100pt">
+										<center><crowd-input allowed-pattern="[0-9]" auto-validate="true" disabled="disabled" error-message="Number only" id="img_res_h" max-length="5" name="img_res_h" value="550"></crowd-input></center>
+										</div>
+										</td>
+									</tr>
+									<tr>
+										<td><button onclick="barDown1()" type="button"><i class="material-icons" style="color:red">arrow_downward</i></button></td>
+										<td>Shorter (Slow -1)</td>
+									</tr>
+									<tr>
+										<td><button onclick="barDown10()" type="button"><i class="material-icons" style="color:red">arrow_downward</i></button></td>
+										<td>Shorter (Fast -10)</td>
+									</tr>
+								</tbody>
+							</table>
+							</center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 				</center>
-			</div>
-			<div class="section">
-				<h2>Research Papers</h2>
-                
-                <table class="papertable">
-					<tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/drawonreference_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Autocomplete Repetitive Stroking with Image Guidance </snap>
-							<snap class="paperconf">(SIGGRAPH Asia 2021 Technical Communications)</snap> <br>
-                            <snap class="author">
-							Yilan Chen, 
-							<snap class="authorme">Kin Chung Kwan</snap>,
-							Li-Yi Wei, Hongbo Fu
-							</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-								Image-guided drawing can compensate for the lack of skills but often requires a significant number of repetitive strokes to create textures. Existing automatic stroke synthesis methods are usually limited to predefined styles or require indirect manipulation that may break the spontaneous flow of drawing. We present a method to autocomplete repetitive short strokes during users’ normal drawing process. Users can draw over a reference image as usual. At the same time, our system silently analyzes the input strokes and the reference to infer strokes that follow users’ input style when certain repetition is detected. Our key idea is to jointly analyze image regions and operation history for detecting and predicting repetitions. The proposed system can reduce tedious repetitive inputs while being fully under user control.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="[2021_SATechComm]_Autocomplete_Repetitive_Stroking_with_Image_Guidance.pdf">Paper</a> 
-							<a class="better" target="_blank" href="https://www.youtube.com/watch?v=_qtCsrrIJQo">Video</a>
-							<a class="better" target="_blank" href="https://doi.org/10.1145/3478512.3488595">DOI</a>
-							</div>
-                        </td>
-                    </tr>  
-					<tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/invertedstippling_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="invertedstippling_anchor"></a>
-                            <snap class="papername">Multi-Class Inverted Stippling </snap>
-							<snap class="paperconf">(SIGGRAPH Asia 2021)</snap> <br>
-                            <snap class="author">
-							Christoph Schulz, 
-							<snap class="authorme">Kin Chung Kwan (Joint first author)</snap>,
-							Michael Becher, Daniel Baumgartner, Guido Reina, Oliver Deussen, and Daniel Weiskopf
-							</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-								We introduce inverted stippling, a method to mimic an inversion technique used by artists when performing stippling. To this end, we extend LindeBuzo-Gray (LBG) stippling to multi-class LBG (MLBG) stippling with multiple layers. MLBG stippling couples the layers stochastically to optimize for per-layer and overall blue-noise properties. We propose a stipple-based filling method to generate solid color backgrounds for inverting areas. Our experiments demonstrate the effectiveness of MLBG in terms of reducing overlapping and intensity accuracy. In addition, we showcase MLBG with color stippling and dynamic multi-class blue-noise sampling, which is possible due to its support for temporal coherence.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2021_SIGGRAPH_Asia]_Multi-Class_Inverted_Stippling.pdf">Paper</a> 
-							<a class="better" target="_blank" href="[2021_SIGGRAPH_Asia]_Multi-Class_Inverted_Stippling_Supp">Supp</a>
-							<a class="better" target="_blank" href="https://youtu.be/yEz96Nv2LJE">Video</a>
-							<a class="better" target="_blank" href="https://github.com/UniStuttgart-VISUS/MLBGStippling">Code</a>
-							<a class="better" target="_blank" href="https://doi.org/10.1145/3478513.3480534">DOI</a>
-							</div>
-                        </td>
-                    </tr>  
-					<tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/autocheckpoint_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="autocheckpoint_anchor"></a>
-                            <snap class="papername">Automatic Image Checkpoint Selection for Guider-Follower Pedestrian Navigation </snap>
-							<snap class="paperconf">(CGF 2020)</snap> <br>
-                            <snap class="author"><snap class="authorme">Kin Chung Kwan</snap>, and Hongbo Fu</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-								In recent years guider-follower approaches show a promising solution to the challenging problem of last-mile or indoor pedestrian navigation without micro-maps or indoor floor plans for path planning. However, the success of such guider-follower approaches is highly dependent on a set of manually and carefully chosen image or video checkpoints. This selection process is tedious and error-prone. To address this issue, we first conduct a pilot study to understand how users as guiders select critical checkpoints from a video recorded while walking along a route, leading to a set of criteria for automatic checkpoint selection. By using these criteria, including visibility, stairs, and clearness, we then implement this automation process. The key behind our technique is a lightweight, effective algorithm using left-hand-side and right-hand-side objects for path occlusion detection, which benefits both automatic checkpoint selection and occlusion-aware path annotation on selected image checkpoints. Our experimental results show that our automatic checkpoint selection method works well in different navigation scenarios. The quality of automatically selected checkpoints is comparable to that of manually selected ones and higher than that of checkpoints by alternative automatic methods.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2020_CGF]_Automatic_Image_Checkpoint_Selection_for_Guider-Follower_Pedestrian_Navigation.pdf">Paper</a> 
-							<a class="better" target="_blank"  href="https://www.youtube.com/watch?v=nQ5RrdtvDiw">Video</a>
-							<a class="better" target="_blank"  href=" https://doi.org/10.1111/cgf.14192">DOI</a>
-							</div>
-                        </td>
-                    </tr>    
-					<tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/ardraw_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="ardraw_anchor"></a>
-                            <snap class="papername">3D Curve Creation on and around Physical Objects with Mobile AR</snap>
-							<snap class="paperconf">(TVCG 2020; presented in IEEE VR 2021)</snap> <br>
-                            <snap class="author">Hui Ye, <snap class="authorme">Kin Chung Kwan</snap>, and Hongbo Fu</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-								The recent advance in motion tracking (e.g., Visual Inertial Odometry) allows the use of a mobile phone as a 3D pen, thus significantly benefiting various mobile Augmented Reality (AR) applications based on 3D curve creation. However, when creating 3D curves on and around physical objects with mobile AR, tracking might be less robust or even lost due to camera occlusion or textureless scenes. This motivates us to study how to achieve natural interaction with minimum tracking errors during close interaction between a mobile phone and physical objects. To this end, we contribute an elicitation study on input point and phone grip, and a quantitative study on tracking errors. Based on the results, we present a system for direct 3D drawing with an AR-enabled mobile phone as a 3D pen, and interactive correction of 3D curves with tracking errors in mobile AR. We demonstrate the usefulness and effectiveness of our system for two applications: in-situ 3D drawing, and direct 3D measurement.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2020_TVCG]_3D_Curve_Creation_on_and_around_Physical_Objects_with_Mobile_AR.pdf">Paper</a> 
-							<a class="better" target="_blank" href="https://www.youtube.com/watch?v=zyh4pEvK7j8">Video</a>
-							<a class="better" target="_blank"  href=" https://doi.org/10.1111/cgf.14192">DOI</a>
-							</div>
-                        </td>
-                    </tr>    
-					<tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/aranimator_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="aranimator_anchor"></a>
-                            <snap class="papername">ARAnimator: In-situ Character Animation in Mobile AR with User-defined Motion Gestures</snap>
-							<snap class="paperconf">(SIGGRAPH 2020)</snap> <br>
-                            <snap class="author">Hui Ye, <snap class="authorme">Kin Chung Kwan (Joint first author)</snap>, Wanchao Su, and Hongbo Fu</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-								Creating animated virtual AR characters closely interacting with real environments is interesting but difficult. Existing systems adopt video seethrough approaches to indirectly control a virtual character in mobile AR, making close interaction with real environments not intuitive. In this work we use an AR-enabled mobile device to directly control the position and motion of a virtual character situated in a real environment. We conduct two guessability studies to elicit user-defined motions of a virtual character interacting with real environments, and a set of user-defined motion gestures describing specific character motions. We found that an SVM-based learning approach achieves reasonably high accuracy for gesture classification from the motion data of a mobile device. We present ARAnimator, which allows novice and casual animation users to directly represent a virtual character by an AR-enabled mobile phone and control its animation in AR scenes using motion gestures of the device, followed by animation preview and interactive editing through a video see-through interface. Our experimental results show that with ARAnimator, users are able to easily create in-situ character animations closely interacting with different real environments.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2020_SIGGRAPH]_ARAnimator_In-situ_Character_Animation_in_Mobile_AR_with_User-defined_Motion_Gestures.pdf">Paper</a> 
-							<a class="better" target="_blank" href="https://www.youtube.com/watch?v=neHS18E_3d4">Video</a>
-							<a class="better" target="_blank" href="#">Results Video</a>
-							<a class="better" target="_blank"  href=" https://doi.org/10.1145/3386569.3392404">DOI</a>
-							</div> 
-                        </td>
-                    </tr>    
-                    <tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/mobi_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="mobi_anchor"></a>
-                            <snap class="papername">Mobi3DSketch: 3D Sketching in Mobile AR</snap>
-							<snap class="paperconf">(CHI 2019)</snap> <br>
-                            <snap class="author"><snap class="authorme">Kin Chung Kwan</snap>, and Hongbo Fu</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Mid-air 3D sketching has been mainly explored in Virtual Reality (VR) and typically requires special hardware for motion capture and immersive, stereoscopic displays. The recently developed motion tracking algorithms allow real-time tracking of mobile devices, and have enabled a few mobile applications for 3D sketching in Augmented Reality (AR). However, they are more suitable for making simple drawings only, since they do not consider special challenges with mobile AR 3D sketching, including the lack of stereo display, narrow field of view, and the coupling of 2D input, 3D input and display. To address these issues, we present Mobi3DSketch, which integrates multiple sources of inputs with tools, mainly different versions of 3D snapping and planar/curves surface proxies. Our multimodal interface supports both absolute and relative drawing, allowing easy creation of 3D concept designs in situ. The effectiveness and expressiveness of Mobi3DSketch are demonstrated via a pilot study.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2019_CHI]_Mobi3DSketch_3D_Sketching_Using_Mobile_AR.pdf">Paper</a> 
-							<a class="better" target="_blank" href="https://www.youtube.com/watch?v=JdP0nkeMEog">Video</a>
-							<a class="better" target="_blank" href="https://www.youtube.com/watch?v=RSKJdAzqMHo">Video: making process</a>
-							<a class="better" target="_blank"  href=" https://doi.org/10.1145/3290605.3300406">DOI</a>
-							</div> 
-							
-							</div>
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/bimanual_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Occlusion-robust Bimanual Gesture Recognition by Fusing Multi-views</snap>
-							<snap class="paperconf">(Multimedia Tools and Applications 2019)</snap> <br>
-                            <snap class="author">Geoffrey Poon, <snap class="authorme">Kin Chung Kwan</snap>, and Wai-Man Pang </snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Human hands are dexterous and always be an intuitive way to instruct or communicate with peers. In recent years, hand gesture is widely used as a novel way for human computer interaction as well. However, existing approaches target solely to recognize single-handed gesture, but not gestures with two hands in close proximity (bimanual gesture). Thus, this paper tries to tackle the problems in bimanual gestures recognition which are not well studied from the literature. To overcome the critical issue of hand-hand self-occlusion problem in bimanual gestures, multiple cameras from different view points are used. A tailored multi-camera system is constructed to acquire multi-views bimanual gesture data. By employing both shape and color features, classifiers are trained with our bimanual gestures dataset. A weighted sum fusion scheme is employed to ensemble results predicted from different classifiers. While, the weightings in the fusion are optimized according to how well the recognition performed on a particular view. Our experiments show that multiple-view results outperform single-view results. The proposed method is especially suitable to interactive multimedia applications, such as our two demo programs: a video game and a sign language learner.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank"  href=" https://doi.org/10.1007/s11042-019-7660-y">DOI</a>
-							</div>
-                        </td>
-                    </tr>                    
-                                        <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/bimanual_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Real-time Multi-view Bimanual Gesture Recognition</snap>
-							<snap class="paperconf">(IEEE ICSIP 2018)</snap> <br>
-                            <snap class="author">Geoffrey Poon, <snap class="authorme">Kin Chung Kwan</snap>, and Wai-Man Pang </snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                This paper presents a learning-based solution to tackle the real-time gesture recognition of bimanual (two hands) gestures which is not well studied from the literature. To overcome the critical issue of hand-hand self-occlusion problem common in bimanual gestures, multiple cameras from diversified views are used. A tailored multi-camera system is constructed to acquire multi-views bimanual gesture data, and data from each view is then fed into a separate classifier for learning. Thus, to ensemble results from these classifiers, we proposed a weighted sum fusion scheme of results from different classifiers. The weightings are optimized according to how well the recognition performed of the particular view. Our experiments show multiple-view results outperform single-view results.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank"  href=" https://doi.org/10.1109/SIPROCESS.2018.8600529">DOI</a>
-							</div>
-                        </td>
-                    </tr>                    
-                    <tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/decomp_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="decomp_anchor"></a>
-                            <snap class="papername">Packing Vertex Data into Hardware-decompressible Textures.</snap>
-							<snap class="paperconf">(TVCG 2017)</snap> <br>
-                            <snap class="author"><snap class="authorme">Kin Chung Kwan</snap>, Xuemiao Xu, Liang Wan, Tien-Tsin Wong, and Wai-Man Pang</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Most graphics hardware features memory to store textures and vertex data for rendering. However, because of the irreversible trend of increasing complexity of scenes, rendering a scene can easily reach the limit of memory resources. Thus, vertex data are preferably compressed, with a requirement that they can be decompressed during rendering. In this paper, we present a novel method to exploit existing hardware texture compression circuits to facilitate the decompression of vertex data in graphics processing unit (GPUs). This built-in hardware allows real-time, random-order decoding of data. However, vertex data must be packed into textures, and careless packing arrangements can easily disrupt data coherence. Hence, we propose an optimization approach for the best vertex data permutation that minimizes compression error. All of these result in fast and high-quality vertex data decompression for real-time rendering. To further improve the visual quality, we introduce vertex clustering to reduce the dynamic range of data during quantization. Our experiments demonstrate the effectiveness of our method for various vertex data of 3D models during rendering with the advantages of a minimized memory footprint and high frame rate.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_black" href="files/papers/[2017_TVCG]_Packing_Vertex_Data_into_Hardware-Decompressible_Textures.pdf">Paper</a>
-							<a class="better" target="_blank"  href=" 
-							https://doi.org/10.1109/TVCG.2017.2695182">DOI</a>
-							
-							</div>
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/where2buy_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Where2Buy: A Location-Based Shopping App with Products-wise Searching</snap>
-							<snap class="paperconf">(IEEE Workshop on Interactive Multimedia Application and Design for Quality Living 2017)</snap> <br>
-                            <snap class="author">Kin Chi Chan, Tak Leung Cheung, Siu Hong Lai, <snap class="authorme">Kin Chung Kwan</snap>, Hoyin Yue and Wai-Man Pang</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                It is usual for a consumer to search a product based on its category and go to related kind of shop to buy a product, e.g. food in supermarket, a pencil from a stationary shop and etc. While it is not uncommon nowadays for a shop to sell various categories of goods at the same time, like a newspaper stand do sell toys, an accessory shop has stationary. However, consumer may not easily notice and purchase these goods, especially if they are in hurry or not familiar with the shops nearby. With the emergence and popularity of many shopping search engines (shopbots), we can actually provide a better matching between the consumer and seller. In this paper, we developed a shopbot app system (Where2Buy) on smartphone that can search and filter the nearby shops which sell the desired products. To simplify the input process, our system allows users to search by text or voice and fuzzy matching is supported to widen the scope of searching. Detailed information of related product and shops are displayed in the result, together with a navigation map showing the best route to the target shops. If the desired product is not available nearby, substitutes in the same category will be recommended for the users. Our user study evidences that our system is simply and easy to use. More than half of the participants prefer Where2Buy than the other available shopbots in Hong Kong.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-								<a class="better" target="_blank"  href=" 
-							https://doi.org/10.1109/ISM.2017.87">DOI</a>
-							</div>
-                        </td>
-                    </tr>   
-                    <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/childcare_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Towards Using Tiny Sensors with Heat Balancing Criteria for Child Care Reminders</snap>
-							<snap class="paperconf">(International Journal of Semantic Computing 2016)</snap> <br>
-                            <snap class="author">Geoffrey Poon, <snap class="authorme">Kin Chung Kwan</snap>, Wai-Man Pang and Kup-Sze Choi</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Raising children is challenging and requires lots of care. Parents always have to provide proper care to their children in time, like hydration and clothing. However, it is difficult to always stay alert or be aware of the care required at proper moments. One reason is that parents nowadays are busy. This especially applies to single parent, or the one who needs to raise multiple children. This paper presents the use of an integrated multi-sensors together with a mobile application to help keep track of unusual situations concerning a child. By monitoring the changes in surrounding temperature, motions, and air pressure acquired from the sensors, our mobile application can infer the physiological needs of the children with the heat equilibrium assumption. As the thermal environment in the human body is mainly governed by the heat balance equation, we fuse all available sensor readings to the equation so as to estimate the change in situation of a child over a certain period of time. Our system can then notify the parents of the necessary care, including hydration, dining, clothing and ear barotrauma relieving. The proposed application can greatly relieve some of the mental load and pressure of the parents in taking care of children.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank"  href=" 
-							https://doi.org/10.1142/S1793351X16400146">DOI</a>
-							</div>
-                        </td>
-                    </tr>     
-                    <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/childcare_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">Towards Using Tiny Multi-sensors Unit for Child Care Reminders</snap>
-							<snap class="paperconf">(IEEE BigMM 2016)</snap> <br>
-                            <snap class="author">Geoffrey Poon, <snap class="authorme">Kin Chung Kwan</snap>, Wai-Man Pang, and Kup-Sze Choi</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Raising children is challenging and requires lots of care. Parents always have to keep track of the status of their children, and provide proper care to them in time, like hydration, dinning, clothing, discomfort relieving, etc. However, it is always difficult to stay alert or be aware of the care required to the children at proper moments. One reason is that parents nowadays are busy, as they usually have to work outside and lack of skills in looking after their children. This especially applies to case that only one of the parents can take care of the child, or one needs to raise several children at the same time. This paper presents the use of an integrated multi-sensors unit together with a mobile application to help keeping track of unusual situations of a child. By monitoring the changes in the surrounding temperature, motions, and air pressure acquired from the sensors, our mobile application can detect the status of the children and notify the parents the necessary care to them. The care includes hydration, dinning, clothing and ear barotrauma relieving. The proposed mobile application can greatly relieve some of the mental load and pressure of the parents in taking care of children.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank"  href=" 
-							https://doi.org/10.1109/BigMM.2016.52">DOI</a>
-							</div>
-                        </td>
-                    </tr>
-                                        <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/lunar_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">A Two-Phase Space Resection Model for Accurate Topographic Reconstruction from Lunar Imagery with Pushbroom Scanners</snap>
-							<snap class="paperconf">(Sensors 2016)</snap> <br>
-                            <snap class="author">Xuemiao Xu, Huaidong Zhang,Guoqiang Han, <snap class="authorme">Kin Chung Kwan</snap>, Wai-Man Pang, Jiaming Fang, and Gansen Zhao </snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Exterior orientation parameters’ (EOP) estimation using space resection plays an important role in topographic reconstruction for push broom scanners. However, existing models of space resection are highly sensitive to errors in data. Unfortunately, for lunar imagery, the altitude data at the ground control points (GCPs) for space resection are error-prone. Thus, existing models fail to produce reliable EOPs. Motivated by a finding that for push broom scanners, angular rotations of EOPs can be estimated independent of the altitude data and only involving the geographic data at the GCPs, which are already provided, hence, we divide the modeling of space resection into two phases. Firstly, we estimate the angular rotations based on the reliable geographic data using our proposed mathematical model. Then, with the accurate angular rotations, the collinear equations for space resection are simplified into a linear problem, and the global optimal solution for the spatial position of EOPs can always be achieved. Moreover, a certainty term is integrated to penalize the unreliable altitude data for increasing the error tolerance. Experimental results evidence that our model can obtain more accurate EOPs and topographic maps not only for the simulated data, but also for the real data from Chang’E-1, compared to the existing space resection model.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-								<a class="better" target="_blank" href="https://doi.org/10.3390/s16040507">DOI</a>
-							</div>
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td class="c1"><img class="paperrep" src="img/rep/food_rep.png"/></td>
-                        <td class="c2">
-                            <snap class="papername">A Mobile Adviser of Healthy Eating by Reading Ingredient Labels</snap>
-							<snap class="paperconf">(MOBIHEALTH 2016)</snap> <br>
-                            <snap class="author">Man Wai Wong, Qing Ye, Yuk Kai Chan Kylar, Wai-Man Pang, and <snap class="authorme">Kin Chung Kwan</snap></snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                Understanding ingredients or additives in food is essential for a healthy life. The general public should be encouraged to learn more about the effect of food they consume, especially for people with allergy or other health problems. However, reading the ingredient label of every packaged food is tedious and no one will spend time on this. This paper proposed a mobile app to leverage the troublesome and at the same time provide health advices of packaged food. To facilitate acquisition of the ingredient list, apart from barcode scanning, we recognize text on the ingredient labels directly. Thus, our application will provide proper alert on allergen found in food. Also it suggests users to avoid food that is harmful to health in long term, like high fat or calories food. A preliminary user study reveals that the adviser app is useful and welcomed by many users who care about their dietary.
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" target="_blank" href="files/papers/[2016_MOBIHEALTH]_A_Mobile_Adviser_of_Healthy_Eating_by_Reading_Ingredient_Labels.pdf">Paper</a>
-							<a class="better" target="_blank" href="https://doi.org/10.1007/978-3-319-58877-3_4" target="_blank">DOI</a>
-							</div>
-                        </td>
-                    </tr>                    
-                    <tr>
-						
-                        <td class="c1"><img class="paperrep" src="img/rep/pad_rep.png"/></td>
-                        <td class="c2">
-							<a class="anchor" id="pad_anchor"></a>
-                            <snap class="papername">Pyramid of Arclength Descriptor for Generating Collage of Shapes</snap>
-							<snap class="paperconf">(SIGGRAPH Asia 2016)</snap> <br>
-                            <snap class="author"><snap class="authorme">Kin Chung Kwan, </snap> Lok-Tsun Sinn Jimmy, Chu Han, Tien-Tsin Wong, and Chi-Wing Fu</snap> <br>
-                            <div class="paperabs">
-                                <snap class="paperabsicon">Abstract</snap>
-                                This paper tackles a challenging 2D collage generation problem, focusing on shapes: we aim to fill a given region by packing irregular and reasonably-sized shapes with minimized gaps and overlaps. To achieve this nontrivial problem, we first have to analyze the boundary of individual shapes and then couple the shapes with partially-matched boundary to reduce gaps and overlaps in the collages. Second, the search space in identifying a good coupling of shapes is highly enormous, since arranging a shape in a collage involves a position, an orientation, and a scale factor. Yet, this matching step needs to be performed for every single shape when we pack it into a collage. Existing shape descriptors are simply infeasible for computation in a reasonable amount of time. To overcome this, we present a brand new, scale- and rotation-invariant 2D shape descriptor, namely pyramid of arclength descriptor (PAD). Its formulation is locally supported, scalable, and yet simple to construct and compute. These properties make PAD efficient for performing the partial-shape matching. Hence, we can prune away most search space with simple calculation, and efficiently identify candidate shapes. We evaluate our method using a large variety of shapes with different types and contours. Convincing collage results in terms of visual quality and time performance are obtained. 
-                                <br>
-                            </div>
-                            <div class="paperlink">
-							<a class="better" href="files/papers/[2016_SIGGRAPH_Asia]_Pyramid_of_Arclength_Descriptor_for_Collage_of_Shapes.pdf" target="_blank">Paper</a>
-							<a class="better" href="http://appsrv.cse.cuhk.edu.hk/~ttwong/cgi-bin/paper-download/download.cgi?path=pad&dl=pad_supp.pdf" target="_blank">Supp</a>
-							<a class="better" href="https://youtu.be/_q0l_CcwBJ4">Video</a>
-							<a class="better" href="https://youtu.be/mLzzwZf6p6s">Video: Making Processes</a>
-							<a class="better" href="https://doi.org/10.1145/2980179.2980234" target="_blank">DOI</a>
-							</div>
-							
-                        </td>
-                    </tr>                    
-                </table>
-                
-            </div>
-			<a class="anchor" id="activity_anchor"></a>
-            <h1 id="activity"><span> Activities </span></h1>
-			<div class="section">
-			
-				<h2>Teaching Activites</h2>
-					Teacher
-					<table class="teachingtable">
+
+				<table style="width:100%">
+					<tbody>
 						<tr>
-							<td class="c1"><span class="newdate3"> 2021 Winter</span></td>
-							<td class="c2"> University of Konstanz</td>
-							<td class="c3"> Illustrative Computer Graphics</td>
+							<td>
+							<center><button class="large" id="setupBackButton" onclick="setupBack2()" type="button">Back</button></center>
+							</td>
+							<td>
+							<center><button class="large" id="setupNextButton" onclick="setupEnd2()" type="button">Next</button></center>
+							</td>
 						</tr>
-						<tr>
-							<td class="c1"><span class="newdate3"> 2015 Summer</span></td>
-							<td class="c2"> The Hong Kong Jockey Club</td>
-							<td class="c3"> CUDA Training</td>
-						</tr>
+					</tbody>
+				</table>
+			</center>
+		</div>
+		
+		<!--Set up gamma-->
+		<div class="page" id="setup3">
+			<center>
+				<h1>Intensity Perception Study</h1>
+
+				<h2>Configuration 3</h2>
+				<img src="https://kckwan-stippling-data.s3.amazonaws.com/img/gamma.png" />
+				<p style="width:80%">
+					Now, you see an image with color bars along with another set of colors blocks with number.<br />
+					Which color blocs has the most similar color to bar?<br />
+					Please write down the number in the box below.
+				</p>
+				<div style="font-size:30pt;width:50%;border: 2px black solid"><crowd-input allowed-pattern="[0-9]|[.]" auto-validate="true" error-message="Number only" id="gamma" label="Your monitor gamma value" name="gamma" required="" style="font-size:30pt" value="2.2"></crowd-input></div>
+				<div id="gamma_err" style="color:red">&nbsp;</div>
+				<div>
+					<table style="width:100%">
+						<tbody>
+							<tr>
+								<td>
+									<center><button class="large" id="setupBackButton" onclick="setupBack3()" type="button">Back</button></center>
+								</td>
+								<td>
+									<center><button class="large" id="setupNextButton" onclick="setupEnd3()" type="button">Next</button></center>
+								</td>
+							</tr>
+						</tbody>
 					</table>
-					<br><br>
-					Teaching Assistants
-					<table class="teachingtable">
-					<tr>
-                        <td class="c1"><span class="newdate3">2020 - 2021</span></td>
-                        <td class="c2">University of Konstanz</td>
-						<td class="c3">  Seminar: Current Trends in Computer Graphics </td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2015 - 2018  </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong</td>
-						<td class="c3">  CMSC5716 Web-Based Graphics and Virtual Reality</td>
-                    </tr>
-					
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2014 - 2017 </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong</td>
-						<td class="c3">  CMSC5736 Mobile Apps Design and Implementation</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2014 Summer </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong</td>
-						<td class="c3">  CMSC5714 Multimedia Technology</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2013 - 2019 </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong</td>
-						<td class="c3">  CMSC5727 Computer Game Software Production</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2011 - 2012 </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong </td>
-						<td class="c3">  CSC5390 Advanced GPU Programming</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2010 Winter </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong </td>
-						<td class="c3">  CSC4120 Principles of Computer Game Software </td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2010 - 2011 </span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong </td>
-						<td class="c3">  CSC3280 Introduction to Multimedia Systems</td>
-                    </tr>
-					<tr>
-                        <td class="c1"><span class="newdate3"> 2009 Winter</span></td>
-                        <td class="c2">The Chinese Univeristy of Hong Kong </td>
-						<td class="c3">  CSC1130 Introduction to Computing Using Java </td>
-                    </tr>
-                </table>
-                <div style="height:20pt"></div>
-				<h2>Other Activites</h2>
-				<div class="flex-container">
-					<div class="flex-childTextA" style="flex-basis:30%;">
-						<h2> 2019  </h2>
-						<h2> China Night</h2>
-						A gathering for Chinese CHI researchers during SIGCHI 2019 in the Rotunda Bar and Diner, Glasgow, United Kingdom.
-					</div> 
-					<div><img style="width:100%" src="img/photo/chinaNight.jpg"/></div> 
 				</div>
-				<div class="flex-container">
-					<div><img style="width:100%" src="img/photo/pg2018.jpg"/></div> 
-					<div class="flex-childTextB" style="flex-basis:50%;">
-						<h2> 2018 </h2>
-						<h2> Pacific Graphics 2018 Helper  </h2>
-						I was a helper in pacific graphics 2018. This photo was captured during the banquet of PG2018 in the Royal Plaza Hotel, Hong Kong.
-					</div> 
-				</div>
-				<div class="flex-container">
-					<div class="flex-childTextA" style="flex-basis:60%;">
-						<h2> 2016 </h2>
-						<h2> First Presentation</h2>
-						This is my first conference presentation for my first ACM SIGGRAPH paper. Prof. Philip Fu captured this photo for me. Thank you.
-					</div> 
-					<div><img style="width:100%" src="img/photo/first.jpg"/></div> 
-				</div>
-			</div>
+			</center>
+		</div>
+		
+		<!--Ready?-->
+		<div class="page" id="setup4">
+			<center>
+				<h1>Intensity Perception Study</h1>
+				<h2>Ready to start</h2>
+				<table style="margin-bottom:100pt">
+					<tbody>
+						<tr>
+							<td style="vertical-align: bottom">
+							<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/distance.png" style="width:80%" /></center>
+							</td>
+							<td style="width:100pt">&nbsp;</td>
+							<td  style="vertical-align: bottom">
+							<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/reflection.png" style="width:80%" /></center>
+							</td>
+							<td  style="vertical-align: bottom">
+							<center><img src="https://kckwan-stippling-data.s3.amazonaws.com/img/timer.png" style="width:80%" /></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<table style="width:100%">
+					<tbody>
+						<tr>
+							<td>
+								<center><button class="large" id="setupBackButton" onclick="setupBack4()" type="button">Back</button></center>
+							</td>
+							<td>
+								<center><button class="large" id="setupNextButton" onclick="setupEnd4()" type="button">Start!</button></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</center>
+		</div>
+		
+		<!--Question template-->
+		<div class="page" id="questions">
+			<div id="questionTest" style="margin-top:100pt;margin-bottom:100pt;color:white">Let&#39;s Start!</div>
+			<center>
+				<table id="questionTable">
+					<tbody>
+						<tr style="height:100pt">
+						</tr>
+						<tr>
+							<td>
+							<div id="imageA">&nbsp;</div>
+							</td>
+							<td style="width:200pt">&nbsp;</td>
+							<td>
+							<div id="imageB">&nbsp;</div>
+							</td>
+						</tr>
+						<tr style="height:100pt">
+						</tr>
+						<tr>
+							<td>
+								<center><button class="large" onclick="answerLeft()" type="button">Left is brighter</button></center>
+							</td>
+							<td>&nbsp;</td>
+							<td>
+								<center><button class="large" onclick="answerRight()" type="button">Right is brighter</button></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</center>
+		</div>
+		
+		<!--Page for resting-->
+		<div class="page" id="restPage">
+			<div style="margin-top:100pt;margin-bottom:100pt;color:white">Rest time! You can have a rest for a while if you need.</div>
+			<center>
+				<img src="https://kckwan-stippling-data.s3.amazonaws.com/img/Coffee.png" style="width:20%" /><BR>
+				<button class="large" onclick="restOK()" type="button">OK now. I can keep going.</button>
+			</center>
+		</div>
+		
+		<!--Page for Error-->
+		<div class="page" id="errorPage">
+			<center>
+				<h2>The known answer are answered incorrectly<br />
+				Sorry, your answer cannot be accepted.</h2>
+			</center>
+		</div>
+		
+		<!--Page for Submission-->
+		<div class="page" id="endStudy">
+			<center>
+				<h2>Please submit your answer using this button:</h2>
+				<crowd-button form-action="submit" style="display:none"></crowd-button><button class="large" onclick="studyEnd()" type="button">Submit.</button>
+			</center>
+		</div>
+		
+		<!--Page for Ending-->
+		<div class="page" id="thankyoupage">
+			<center>
+				<h1>The End</h1>
+				<h2>Thank you for participants!</h2>
+			</center>
+		</div>
+	</crowd-form>
+</div>
+
+
+<script>
+	var mon_model = '';
+	var mon_size = 0;
+	var mon_res_w = 0;
+	var mon_res_h = 0;
+	var mon_ratio = [0,0];
+	var img_res_h = 550;
+	var current_Page = '';
+	var current_Question = '';
+	var startTime = 0;
+	var answered_question_num = 0;
+	var next_question_index = 0;
+	var error_diffusion = 0;
+	var black_pixel_count = 0;
+	
+	var intensity = [];
+	var intensity2 = [];
+	//var filenames = [];
+	var sizeIds = [];
+	var methodIds = [];
+	var oriIds = [];
+
+	//var is_question_answered = [];
+	var answers = [];
+	var answering_time = [];
+	var isPrepared = false;
+	var drawCompleted = [false, false];
+	var gamma = 2.2;
+	var rested = false;
+	var isScaleFixed = false;
+	//var isAA = false;
+	//var isInverted = false;
+	
+	//UI Function
+	
+	//start main function
+	initQuestions();
+	function initQuestions(){
+		window.addEventListener('resize',checkSetting);
+		for(let i = 0; i < TASK_NUM; i++){
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'answer' + i + '\' name=\'answer' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'time' + i + '\' name=\'time' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'MA' + i + '\' name=\'MA' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'IA' + i + '\' name=\'IA' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'SA' + i + '\' name=\'SA' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'OA' + i + '\' name=\'OA' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'MB' + i + '\' name=\'MB' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'IB' + i + '\' name=\'IB' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'SB' + i + '\' name=\'SB' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'OB' + i + '\' name=\'OB' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'average_colorA' + i + '\' name=\'average_colorA' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'average_colorB' + i + '\' name=\'average_colorB' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
+		}
+	}
+	function osChange(v,q){
+		document.getElementById("win" + "_" + q).style.display = "none";
+		document.getElementById("mac" + "_" + q).style.display = "none";
+		//document.getElementById("linux" + "_" + q).style.display = "none";
+		document.getElementById(v + "_" + q).style.display = "block";
+	}
+	function changePage(page_from,page_to){
+		document.getElementById(page_from).style.display = "none";
+		document.getElementById(page_to).style.display = "block";
+		current_Page = page_to;
+	}
+	function introEnd(){   changePage('introduction','setup1'); 	}
+	function setupBack(){  changePage('setup1','introduction'); 	}
+	function setupEnd(){   
+		isScaleFixed = true;
+		changePage('setup1','setup2');	    	
+	}
+	function setupBack2(){ 
+		isScaleFixed = false;
+		changePage('setup2','setup1');			
+	}
+	function setupEnd2(){  changePage('setup2','setup3');			}
+	function setupBack3(){ changePage('setup3','setup2');			}
+	function setupEnd3(){  changePage('setup3','setup4');			}
+	function setupBack4(){ changePage('setup4','setup3');			}
+	function setupEnd4(){  
+		prepareQuestions();
+		changePage('setup4','questions');	
+	}
+	function studyEnd(){   
+		document.body.style.backgroundColor = '#FFFFFF';
+		changePage('endStudy','thankyoupage');
+		document.querySelector('crowd-form').submit();
+	}
+	
+	function monInput(){
+		mon_model = document.getElementById('mon_model').value;
+		mon_size = parseInt(document.getElementById('mon_size').value);
+		mon_res_w = parseInt(document.getElementById('mon_res_w').value);
+		mon_res_h = parseInt(document.getElementById('mon_res_h').value);
+		if (checkMonInputValue()){ 
+			checkSetting(); 
+			calculateCreditCardSize();
+		}
+	}
+	
+	function calculateCreditCardSize(){
+		mon_ratio = mon_res_h / mon_res_w ;
+		// h = w * r
+		// h^2+ (h/r)^2 = c^2
+		// h^2 ( 1 + r ^2 ) / r ^2 = c^2
+		// h sqrt( 1 + r ^2 ) / r  = c
+		// h = r c / sqrt( 1 + r^2 )
+		mon_height_inch = mon_ratio * mon_size / Math.sqrt( 1.0 + mon_ratio * mon_ratio);
+		card_ratio = (3.375) / mon_height_inch;
+		img_res_h = Math.floor(mon_res_h * card_ratio);
+		document.getElementById('img_res_h').value = img_res_h;
+		document.getElementById('bar').style.height = img_res_h + "px";
+	}
+	function checkMonInputValue(){
+		document.getElementById('mon_err').innerHTML = '';
+		if (mon_model.length == 0) document.getElementById('mon_err').innerHTML = 'The model cannot be empty';
+		if (isNaN(mon_size) || mon_size <= 0) document.getElementById('mon_err').innerHTML = 'The monitor size cannot be empty or negative';
+		if (isNaN(mon_res_w) || mon_res_w <= 0) document.getElementById('mon_err').innerHTML = 'The resolution cannot be empty or negative';
+		if (isNaN(mon_res_h) || mon_res_h <= 0) document.getElementById('mon_err').innerHTML = 'The resolution cannot be empty or negative';
+		if (mon_size < MIN_MON_INCH) document.getElementById('mon_err').innerHTML = 'We require a monitor with ' + MIN_MON_INCH+ ' inch or above.';
+		if (mon_res_w < MIN_MON_RES_W|| mon_res_h < MIN_MON_RES_H)document.getElementById('mon_err').innerHTML = 'We require a monitor with resolution more than '+MIN_MON_RES_W+' x ' + MIN_MON_RES_H;
+		/*if (!isRatioAccepted()) { 
+			document.getElementById('mon_err').innerHTML = 'This resolution is not accepted in our study.';
+			return false;}*/
+		return (document.getElementById('mon_err').innerHTML == '');
+	}
+	
+	//check if the ratio of monitor is reasonable
+	function isRatioAccepted(){
+		return true;
+		//var diff = 0;
+		//for (const ratio of ACCEPTED_RATIO) {
+			//diff = (mon_res_h / ratio[1] * ratio[0]) / mon_res_w;
+			//if(diff > 0.95 && diff < 1.05) return true; 
 			
-			<!--<a class="anchor" id="hobby_anchor"></a>
-            <h1 id="hobby"><span> Hobby </span></h1>
-            <div class="section">
-                <!--<h2>Travelling to Japan</h2>
-                I like to travel to Japan with my family. Here are some photos captured in Japan using my iPhone camera.<BR>
-                <div class="gallay">
-                <img src=".jpg"/>
-                <img src=".jpg"/>
-                </div>
-            </div>-->
-			<!--<a class="anchor" id="contact_anchor"></a>
-            <h1 id="contact"><span> Contact</span></h1>-->
-			<!--<a class="anchor" id="resources_anchor"></a>
-            <h1 id="resources"><span> Resources </span></h1>
-			<div class="section">
-				<a href="resources/resources.html">
-					<div class="linkbox">
-						<h2> Useful Resources </h2>
-					</div> 
-				</a>
-				<a href="tutorial/tutorial.html">
-					<div class="linkbox">
-						<h2> KC's Learning Notes </h2>
-					</div> 
-				</a>
-            </div>-->
+			//diff = (mon_res_w / ratio[1] * ratio[0]) / mon_res_h;
+			//if(diff > 0.95 && diff < 1.05) return true;
+		//}
+		//return false;
+	}
+	
+	function checkSetting(){
+		if(isScaleFixed){
+			alert("Error: You should not resize the windows during the experiement.");
+			isScaleFixed = false;
+			document.body.style.backgroundColor = '#FFFFFF';
+			changePage(current_Page,'setup1');
+		}
+		document.getElementById('setupNextButton').disabled = true;
+	
+		var screenPixelRatio = (window.outerWidth) / window.innerWidth;
+		var isAtDefaultZoom = screenPixelRatio > 0.95 && screenPixelRatio <= 1.05;
+		var isResolutionOK = ( mon_res_w == screen.availWidth && mon_res_h == screen.availHeight )
+
+		document.getElementById('setuplist').innerHTML = '<h2>Checklist</h2>';
+		document.getElementById('setuplist').innerHTML += ("<p><b>Detected screen resolution: </b>" + screen.availWidth + " x " + screen.availHeight
+		+ (isResolutionOK ? " <span style='color:green'>✔</span>"
+		: " <i class=\"material-icons\" style='color:red' >report_problem</i>"
+		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> The detected screen resolution is different from your input. It can be caused by some scaling features of your operation system or graphic hardware driver. Please disable those scaling of native output in your operating system. <BR><BR> For Windows: <BR>" +
+			" 1. Right click an empty space in your desktop.  <BR>" +
+			" 2. Select &quot;Display settings&quot; in the menu. <BR>" +
+			" 3. Look for \"Scale and layout\" <BR>" +
+			"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/window_zoom.png' /> <BR> <BR>" +
+		"For Mac: <BR>" +
+			"1. Click the Mac icon at the top-left corner.<BR>" +
+			"2 .Click Display in the tag.<BR>" +
+			"3. Select \"Best for display\"<BR>" +
+			"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/mac_zoom.jpg' /><BR>" +
+		"</crowd-modal>"));
+		document.getElementById('setuplist').innerHTML += ("<p><b>Browser Zoom: </b>" + (screenPixelRatio * 100.0).toFixed(2)
+		+ (isAtDefaultZoom ? "% <span style='color:green'>✔</span>"
+		: "% <i class=\"material-icons\" style='color:red' >report_problem</i>"
+		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> Zoom in/out is detected. Please set the zoom of your brower to 100%. You can do so by clicking the setting of your browers. <BR> Example for Chrome : <BR> <img src='img/browser.png'/></crowd-modal>"));
+		
+		if(isAtDefaultZoom && isResolutionOK){
+			document.getElementById('setupNextButton').disabled = false;
+		}
+	}
+	
+	function barUp1()	{ barUpdate(SMALL_BAR_MOVE) }
+	function barUp10()	{ barUpdate(LARGE_BAR_MOVE) }
+	function barDown1()	{ barUpdate(-SMALL_BAR_MOVE) }
+	function barDown10(){ barUpdate(-LARGE_BAR_MOVE) }
+	function barUpdate(value){
+		img_res_h += value;
+		if(img_res_h < 1) img_res_h = 1;
+		document.getElementById('img_res_h').value = img_res_h;
+		document.getElementById('bar').style.height = img_res_h + "px";
+	}
+	
+	
+	//Maths Functions
+	
+	function getColor(value) {
+		var v = ('0' + Math.floor(value).toString(16)).substr(-2);
+		var color = '#' + v + v + v + "FF";
+		//console.log(color);
+		return color;
+	}
+	function getRandomColor() {
+		var v = ('0' + Math.floor(Math.random() * 255).toString(16)).substr(-2);
+		var color = '#' + v + v + v + "FF";
+		//console.log(color);
+		return color;
+	}
+	function gammaCorrection(v){
+		return Math.round( Math.pow(v / 255.0, 1.0 / gamma) * 255.0);
+	}
+	
+	//Circle Area Begin, modified from C++ Code in StackOverflow
+	function g(x,h,r){ 
+		return 0.5 * ( Math.sqrt(1 - x * x / (r * r)) * x * r + r * r * Math.asin(x / r) - 2 * h * x );				
+	}
+	function area2(x0,x1,h,r){
+		if (x0 > x1) [x0, x1] = [x1,x0];
+		let s = (h < r) ? Math.sqrt(r * r - h * h) : 0;
+		return g(Math.max(-s, Math.min(s, x1)), h, r) - g(Math.max(-s, Math.min(s, x0)), h, r);
+	}
+	function area1(x0,x1,y0,y1,r)
+	{
+		if (y0 > y1) [y0,y1] = [y1, y0];
+		if (y0 < 0) {
+			if (y1 < 0) return area1(x0, x1, -y0, -y1, r); 
+			else return area1(x0, x1, 0, -y0, r) + area1(x0, x1, 0, y1, r);
+		}else return area2(x0, x1, y0, r) - area2(x0, x1, y1, r); 
+	}
+	function area(x0, x1, y0, y1, cx, cy, r)
+	{
+		x0 -= cx; x1 -= cx;
+		y0 -= cy; y1 -= cy;
+		return area1(x0, x1, y0, y1, r);
+	}
+	//Circle Area End 
+	
+	
+	function norm(x,y,x2,y2){
+		return Math.sqrt( Math.pow(x2-x,2) + Math.pow(y2-y,2));
+	}
+	function normRGB(c){
+		return Math.sqrt( c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
+	}
+	function gammaCorrectionRGB(c){
+		return [
+			gammaCorrection(c[0]),
+			gammaCorrection(c[1]),
+			gammaCorrection(c[2])
+			];
+	}
+	function color2String(c){
+		return 'rgb('+c[0]+','+c[1]+','+c[2]+')';
+	}
+	
+	//Questions Function
+	
+	
+	function prepareQuestions(){ 
+		createQuestions();
+		//read the gamma reading
+		gamma = document.getElementById('gamma').value;
+		//setup background
+		document.body.style.backgroundColor = '#808080';
+		//console.log(img_res_h);
+		document.getElementById('imageA').style.height = img_res_h + 'px';
+		document.getElementById('imageA').style.width  = img_res_h + 'px';
+		document.getElementById('imageB').style.height = img_res_h + 'px';
+		document.getElementById('imageB').style.width  = img_res_h + 'px';
+		next_question_index = -1;
+		nextQuestion();
+	}
+	function createQuestions(){	
+		if(isPrepared) return;
+		//init
+		for(let i = 0; i < TASK_NUM; i++){
+			//is_question_answered[i] = 0;
+			answers[i] = -1;
+			answering_time[i] = -1;
+		}
+		//readCSVQuestions();
+		generateRandomQuestions();
+		isPrepared = true;
+	}
+	//read the Amazon MTurk CSV File
+	function readCSVQuestions(){}
+	//Generate random questions on the fly
+	function generateRandomQuestions(){	
+		for(let i = 0; i < TASK_NUM; i++){
+			var randomOffset = (Math.random() < 0.5) ? 0 : 1;	//left or right
+			var idA = i * 2 +  randomOffset;
+			var idB = i * 2 +  (1 - randomOffset);
+
+			var isFixed = false;
+			fixedAnsQuestion.forEach(
+				function (item, index) {
+					if(item == i) isFixed = true;
+				}
+			);
+			//if(i != fixedAnsQuestion[0] && i != fixedAnsQuestion[1] && i != fixedAnsQuestion[2]){	
+			if(!isFixed){
+				methodIds[idA] = Math.floor(Math.random() * (methodnames.length));	//stippling img
+				methodIds[idB] = 0;	//color img
+				intensity[idA] = (Math.floor(Math.random() * intensityStep)) * intensityNum + minIntensity;
+				intensity[idB] = (Math.floor(Math.random() * intensityStep)) * intensityNum + minIntensity;
+			}else{ //fixed answer
+				methodIds[idA] = 0;	//stippling img
+				methodIds[idB] = 0;	//color img
+				intensity[idA] = intensityStep * intensityNum + minIntensity;	//brightest
+				intensity[idB] = minIntensity;	//darkest
+			}
+			sizeIds[idA] = sizelist[Math.floor(Math.random() * sizelist.length)];
+			sizeIds[idB] = sizelist[Math.floor(Math.random() * sizelist.length)];
+			oriIds[idA] = ( isHex(methodIds[idA]) ) ? orilist[Math.floor(Math.random() * orilist.length)]: 0;
+			oriIds[idB] = ( isHex(methodIds[idB]) ) ? orilist[Math.floor(Math.random() * orilist.length)]: 0;
+		}
+	}
+	function isHex(id){ return (id == 1 || id == 2);}
+	
+	function drawCircle(ctx, ptx, pty , radius){
+		//ctx.beginPath();
+		//ctx.arc(x,y,r, 0, 2 * Math.PI);	
+		//ctx.fillStyle = "black";
+		//ctx.fill();
+		
+		var sign = 1;
+		
+		//pixel of circle center
+		//if (isInverted) ctx.fillStyle="white";
+		//else ctx.fillStyle="black";
+		let cx = Math.round(ptx);
+		let cy = Math.round(pty);
+		let end = Math.ceil(radius);
+		let radius_sqr = end * end;
+		for (let x = -end; x <= end; ++x) {
+			let px = cx + x;         //Move from center 
+			if (px < 0 || px > img_res_h - 1) continue;
+			for (let y = -end; y <= end; ++y) {
+				py = cy + y;            //Move from center 
+				if (py < 0 || py > img_res_h - 1) continue;
+				
+				
+				//
+				//cv::Vec3b* p = (cv::Vec3b*)(img.ptr(py)) + px;
+				//if ((*p) == c) continue;
+				let outter_corner_x = (x >= 0) ? px + 0.5 : px - 0.5;
+				let outter_corner_y = (y >= 0) ? py + 0.5 : py - 0.5;
+				let inner_corner_x = (x < 0) ? px + 0.5 : px - 0.5;
+				let inner_corner_y = (y < 0) ? py + 0.5 : py - 0.5;
 			
-			<a class="anchor" id="link_anchor"></a>
-			<h1 id="links"><span> Links</span></h1>
-			<div class="section">
-				<a href="https://tmak.info/">
-					<div class="linkbox">
-						<h2> My Friend: Terrence Mak's Personal Webpage.</h2>
-						https://tmak.info/ <br>
-					</div> 
-				</a>
-				<a href="https://www.overleaf.com/">
-					<div class="linkbox">
-						<h2> Overleaf  </h2>
-						https://www.overleaf.com/ <br>
-					</div> 
-				</a>
-				<a href="http://kesen.realtimerendering.com/">
-					<div class="linkbox">
-						<h2> Ke-Sen Huang's Home Page  </h2>
-						http://kesen.realtimerendering.com/ <br>
-					</div> 
-				</a>
-			</div>
-                
-            
-        </div> 
-		<div style="height:500pt"></div>
-    </body>
-    <footer>
-	KC Kwan's webpage @ 2021. All rights reserved.
-	</footer>
-</html>
+				//let color = ctx.getImageData(px,py, 1, 1).data;
+				if (norm(ptx,pty, outter_corner_x, outter_corner_y) < radius){
+					//let color = ctx.getImageData(px,py, 1, 1).data;
+					//console.log('a');
+					//var r,g,b;
+					/*if (isInverted){
+						ctx.fillStyle="white";
+						//r = g = b = 255;
+						//sign = -1;
+					}else{ 
+						ctx.fillStyle="black";
+						//r = g = b = 0;
+					}*/
+					/*if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
+						error_diffusion += sign;
+					else*/
+						ctx.fillRect( px, py, 1, 1 );   //inside circle
+				}else if (
+					norm(ptx,pty, inner_corner_x, inner_corner_y) <= radius ||            //border case
+					(x==0 && y==0 && radius <= 1.0)                     //center case
+					)
+				{
+					let a = Math.min(1.0,Math.max(0.0,area(px - 0.5, px + 0.5, py - 0.5, py + 0.5, ptx, pty, radius)));
+					//if(isAA){
+						
+						/*if (!isInverted){
+							let new_color = [
+								color[0] * (1.0 - a),
+								color[1] * (1.0 - a),
+								color[2] * (1.0 - a)
+							];
+							new_color = gammaCorrectionRGB(new_color);
+							
+							if (normRGB(new_color) < normRGB(color)){
+								ctx.fillStyle = color2String(new_color);
+								ctx.fillRect( px, py, 1, 1 ); 
+							}
+						}else{
+							let new_color = [
+								color[0] * (1.0 - a) + 255 * a,
+								color[1] * (1.0 - a) + 255 * a,
+								color[2] * (1.0 - a) + 255 * a
+							];
+							new_color = gammaCorrectionRGB(new_color);
+							if(normRGB(new_color) > normRGB(color)){
+								ctx.fillStyle = color2String(new_color);
+								ctx.fillRect( px, py, 1, 1 ); 
+							}
+						}*/
+					//}else
+					{
+						//No AA
+						//let color = ctx.getImageData(px,py, 1, 1).data;
+						//error_diffusion = 0;
+						if(a >= 0.5){
+						//if(error_diffusion + a >= 0.5){
+							//var r,g,b;
+							/*if (isInverted){
+								ctx.fillStyle="white";
+								//r = g = b = 255;
+								//sign = -1;
+							}else{ 
+								ctx.fillStyle="black";
+								//r = g = b = 0;
+							}*/
+							//if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
+								//error_diffusion += a * sign;
+							//else
+							{
+								//error_diffusion -= (1.0 - a) * sign;	//new draw
+								ctx.fillRect( px, py, 1, 1 ); 
+							}
+						}/*else{
+							error_diffusion += a * sign;;
+						}*/
+					}
+				}
+			}
+		}
+		
+	}
+	function avgColor(ctx){
+		//console.log("AVG");
+		var imgData = ctx.getImageData(0, 0, img_res_h, img_res_h).data;
+		var pixelSum = 0;
+		for(let i=0; i<= imgData.length; i+=4){
+			pixelSum += (imgData[i] > 128 ? 255 : 0);
+		}
+		
+		pixelSum /= img_res_h * img_res_h;
+		return pixelSum;
+	}
+	function startDisplay(){
+		if(drawCompleted[0] && drawCompleted[1]){
+			document.getElementById('questionTable').style.display = "table";
+			startTime = Date.now();
+		}else{
+			setTimeout( startDisplay , 100);
+		}
+	}			
+	function nextQuestion() {
+		
+		//clear the page
+		document.getElementById('questionTable').style.display = "none";
+		document.getElementById('imageA').innerHTML = "";
+		document.getElementById('imageB').innerHTML = "";
+		drawCompleted[0] = false;
+		drawCompleted[1] = false;
+		//next_question_index = Math.floor(Math.random() * TASK_NUM);
+		//while(is_question_answered[next_question_index]){
+			//next_question_index = (next_question_index+1) % TASK_NUM;
+		//}
+		
+		//next questions
+		do{
+			next_question_index++;
+		}while(answered[next_question_index]);
+		setTimeout( startDisplay , REST_TIME);
+		
+		//Create images
+		console.log(methodIds[next_question_index * 2]);						 
+		console.log(methodIds[next_question_index * 2 + 1]);						 
+		console.log(intensity[next_question_index * 2]);						 
+		console.log(intensity[next_question_index * 2 + 1]);						 
+		document.getElementById('questionTest').innerHTML = "Question " + (answered_question_num+1) + " / " + TASK_NUM + "<BR> Which one is brighter?";
+		draw('A',next_question_index * 2);
+		draw('B',next_question_index * 2 + 1);
+	}
+	function draw(canvasName, next_question_index){
+		if(methodIds[next_question_index] == 0){
+			drawColor(canvasName,next_question_index);
+		}else if (methodIds[next_question_index] <= 4){
+			drawStippling(canvasName,next_question_index);
+		}else if (methodIds[next_question_index] == 5){
+			drawDithering(canvasName,next_question_index);
+		}else{
+			console.log("Unknown method : " + methodnames[methodIds[next_question_index]] + "(" +methodIds[next_question_index] +")");
+		}
+	}
+	function getCanvasNum(name){
+		if(name == 'A') return 0;
+		else if(name == 'B') return 1;
+	}
+	function drawColor(canvasName, index){
+		document.getElementById('average_color' + canvasName + Math.floor(index/2)).value = intensity[index];
+		document.getElementById('image' + canvasName).style.backgroundColor  = getColor(intensity[index]);//getRandomColor();
+		drawCompleted[getCanvasNum(canvasName)] = true;
+	}
+	function drawDithering(canvasName,next_question_index){
+		var size = sizeIds[next_question_index];					
+		/*
+		//One block of pattern to copy
+		var p_size_2 = PATTERN_SIZE * PATTERN_SIZE;
+		var num = Math.round((1.0 - intensity[next_question_index] / 255) * p_size_2);
+		var pattern;
+		if(num < 128){
+			pattern = Array(p_size_2).fill(1);
+			for(let i = 0; i < p_size_2 - num ; ++i)
+			{
+				var id = Math.floor(Math.random() * p_size_2);
+				while(pattern[id] == 0){ id = (id + 1) % p_size_2; }
+				pattern[id] = 0;
+			}
+		}else{
+			pattern = Array(p_size_2).fill(0);
+			for(let i = 0; i < num ; ++i)
+			{
+				var id = Math.floor(Math.random() * p_size_2);
+				while(pattern[id] == 1){ id = (id + 1) % p_size_2; }
+				pattern[id] = 1;
+			}
+		}*/
+		
+		var canvas = document.createElement('canvas');
+		canvas.id     = "dithering";
+		canvas.width  = img_res_h;
+		canvas.height = img_res_h;
+		canvas.style.zIndex   = 0;
+		canvas.style.position = "absolute";
+		var ctx = canvas.getContext("2d");
+		//background
+		ctx.fillStyle="white";
+		ctx.fillRect(0,0,img_res_h,img_res_h);
+		//foreground
+		ctx.fillStyle="black";
+		for (let x = 0; x < img_res_h; x += size){
+			for (let y = 0; y < img_res_h; y += size){
+				if(Math.floor(Math.random() * 255 > intensity[next_question_index]))
+					ctx.fillRect(x,y,size,size);
+				/*if(pattern[((y/size) % PATTERN_SIZE) * PATTERN_SIZE + ((x/size) % PATTERN_SIZE)] == 1){
+					ctx.fillRect(x,y,size,size);
+				}*/
+			}
+		}
+		var average_color = avgColor(ctx);
+		console.log(average_color);						 
+		document.getElementById('average_color' + canvasName + Math.floor(next_question_index/2)).value = average_color;
+		document.getElementById('image' + canvasName).appendChild(canvas)
+		drawCompleted[getCanvasNum(canvasName)] = true;
+	}
+	function inverted(id){
+		return (id == 2 || id == 4);
+	}
+	function drawStippling(canvasName,next_question_index){
+		var request = new XMLHttpRequest();
+		var filenames = filepath 
+			+String(methodnames[methodIds[next_question_index]]) + '_' 
+			+ String(intensity[next_question_index]) + '_'
+			+ String(sizeIds[next_question_index]) + '_'
+			+ String(oriIds[next_question_index])
+			+ '.txt';
+		console.log(next_question_index);	
+		console.log(filenames);		
+		request.open('GET', filenames, true);
+		request.responseType = 'blob';
+		
+		request.onerror = function() {
+			alert("Error: Cannot download images. Code:"
+			+ "HTER" 
+			+ String(methodnames[methodIds[next_question_index]]) + '.' 
+			+ String(intensity[next_question_index]) + '.'
+			+ String(sizeIds[next_question_index]) + '.'
+			+ String(oriIds[next_question_index])); 
+		};
+		request.onload = function() {
+			var reader = new FileReader();
+			reader.readAsArrayBuffer(request.response);
+			reader.onload =  function(e){
+				setTimeout( function(){
+					document.getElementById('questionTable').style.display = "table";
+					startTime = Date.now();
+				}, REST_TIME);
+				var i = new Int32Array(e.target.result.slice(0,16));
+				//var f = new Float32Array(e.target.result.slice(methodIds[next_question_index] < 2? 20:16));
+				var f = new Float32Array(e.target.result.slice(20));
+				var num = Number(i[0]).toString(10);
+				var size = Number(i[3]).toString(10);
+				
+				
+				var canvas = document.createElement('canvas');
+				canvas.id     = "CursorLayer";
+				canvas.width  = img_res_h;
+				canvas.height = img_res_h;
+				canvas.style.zIndex   = 0;
+				canvas.style.position = "absolute";
+			
+				var ctx = canvas.getContext("2d");
+				
+				if (inverted(methodIds[next_question_index])){
+					ctx.fillStyle="black";
+					ctx.fillRect(0,0,img_res_h,img_res_h);
+					ctx.fillStyle="white";
+				}else {
+					ctx.fillStyle="white";
+					ctx.fillRect(0,0,img_res_h,img_res_h);
+					ctx.fillStyle="black";
+				}
+				
+				
+				//error_diffusion = 0;
+				//var end_size =  / 2;
+				//var drawn = new Array(end_size);
+				//drawn.fill(0);
+				//float dist = (f[0]-f[2]);
+				//double small_angle = acos(dist / radius);
+				//double small_circle_area = radius * radius * small_angle / 2; // r^2 pi * small_angle / 2pi
+				//double small_triangle_area = dist * dist * tan(small_angle) / 2;
+				//double exceed_circle_area = small_circle_area - small_triangle_area;
+				
+				for (let id = 0; id < f.length; id+=2){
+					//var nid = Math.floor(Math.random() * end_size);
+					//while(drawn[nid]) nid = (nid + 1) % end_size;
+					drawCircle(ctx,Number(f[id]), Number(f[id + 1]), size);
+					//if (dist < radius) error_diffusion -= exceed_circle_area * 12;
+					//drawn[nid] = 1;
+				}
+				
+				var average_color = avgColor(ctx);
+				console.log(average_color);						 
+				document.getElementById('average_color' + canvasName + Math.floor(next_question_index/2)).value = average_color;
+				document.getElementById('image' + canvasName).appendChild(canvas)
+				drawCompleted[getCanvasNum(canvasName)] = true;
+			};
+		};
+
+		request.send();
+	}
+	
+	function errorPass(){
+		return error;
+	}
+	function endStudy(){
+		if(errorPass()){
+			changePage('restPage','endStudy');
+		}else{
+			changePage('restPage','errorStudy');
+		}
+	}
+	function answerLeft(){  answered(0); }
+	function answerRight(){ answered(1); }
+	function restOK(){ 
+		if(answered_question_num < TASK_NUM){ 
+			changePage('restPage','questions');
+			nextQuestion(); 
+		}else{ endStudy(); }
+	}
+	function answered(index){
+		var time = Date.now() - startTime;
+		answers[next_question_index] = index;	//0-left 1-right
+		console.log((index ? 'R' : 'L'));
+		document.getElementById('answer' + next_question_index).value = (index ? 'R' : 'L');
+		document.getElementById('time' + next_question_index).value = 	time;
+		
+		document.getElementById('MA' + next_question_index).value = methodnames[methodIds[next_question_index * 2]];
+		document.getElementById('IA' + next_question_index).value = intensity[next_question_index * 2];
+		document.getElementById('SA' + next_question_index).value = sizeIds[next_question_index * 2];
+		document.getElementById('OA' + next_question_index).value = oriIds[next_question_index * 2];
+		document.getElementById('MB' + next_question_index).value = methodnames[methodIds[next_question_index * 2 + 1]];
+		document.getElementById('IB' + next_question_index).value = intensity[next_question_index * 2 + 1];
+		document.getElementById('SB' + next_question_index).value = sizeIds[next_question_index * 2 + 1];
+		document.getElementById('OB' + next_question_index).value = oriIds[next_question_index * 2 + 1];
+		
+		
+		answered_question_num++;
+		if(answered_question_num >= TASK_NUM){ changePage('questions','endStudy');}
+		else if(answered_question_num % QUESTION_NUM_BEFORE_REST == 0){ changePage('questions','restPage'); }
+		else { nextQuestion(); }
+	}
+
+</script>
