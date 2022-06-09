@@ -140,7 +140,7 @@
 				<table style="width:80%">
 					<tbody>
 						<tr>
-									<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" label="Your monitor size in inch (diagonally)" max-length="3" name="mon_size"></crowd-input></td>
+							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" label="Your monitor size in inch (diagonally)" max-length="3" name="mon_size"></crowd-input></td>
 							<td>:</td>
 							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w" label="Your monitor resolution (Width)" max-length="5" name="mon_res_w"></crowd-input></td>
 							<td>x</td>
@@ -445,6 +445,7 @@
 	initQuestions();
 	function initQuestions(){
 		window.addEventListener('resize',checkSetting);
+		document.getElementById('setupNextButton').disabled = true;
 		for(let i = 0; i < TASK_NUM; i++){
 			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'answer' + i + '\' name=\'answer' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
 			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'time' + i + '\' name=\'time' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
@@ -474,8 +475,10 @@
 	function introEnd(){   changePage('introduction','setup1'); 	}
 	function setupBack(){  changePage('setup1','introduction'); 	}
 	function setupEnd(){   
-		isScaleFixed = true;
-		changePage('setup1','setup2');	    	
+		if(monInput()){
+			isScaleFixed = true;
+			changePage('setup1','setup2');	    	
+		}
 	}
 	function setupBack2(){ 
 		isScaleFixed = false;
@@ -501,9 +504,13 @@
 		mon_res_w = parseInt(document.getElementById('mon_res_w').value);
 		mon_res_h = parseInt(document.getElementById('mon_res_h').value);
 		if (checkMonInputValue()){ 
-			checkSetting(); 
-			calculateCreditCardSize();
+			if(checkSetting()){
+				calculateCreditCardSize();
+				return true;
+			}
 		}
+		document.getElementById('setupNextButton').disabled = true;
+		return false;
 	}
 	
 	function calculateCreditCardSize(){
@@ -582,6 +589,9 @@
 		
 		if(isAtDefaultZoom && isResolutionOK){
 			document.getElementById('setupNextButton').disabled = false;
+			return true;
+		}else{
+			return false;
 		}
 	}
 	
