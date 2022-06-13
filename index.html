@@ -3,7 +3,7 @@
 <link rel="shortcut icon" href="#">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 <style type="text/css">
-	body{ font-size: 24pt;}
+	body,table { font-size: max(24pt,1vw);}
 	html, body, #wrapper {
       height:100%;
       margin: 0;
@@ -38,7 +38,7 @@
 		margin-left: auto;
 		margin-right: auto;
 		text-align: center;
-		font-size: 30px;
+		font-size: max(30px,1.2vw);
 	}
 	button.large, div.largeButton * { 
 		width:60%;
@@ -47,10 +47,9 @@
 		margin-left: auto;
 		margin-right: auto;
 		text-align: center;
-		font-size: 30px;
+		font-size: max(30px,1.2vw);
 	}
-	h1 { margin-top:100pt;}
-	crowd-input { font-size: 30px; }
+	h1 { margin-top:100pt; font-size: max(48pt,2vw);}
 </style>
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
 <script>
@@ -135,17 +134,18 @@
 				<h2>Configuration</h2>
 					<p style="width:80%">
 						To perform this online study, you need to tell us your your computer setting.<br />
-						Now, please <b>maximum</b> your brower by the &#39;Maximize&#39; button on the top of your browers and then input the following information: <crowd-input id="mon_model" label="Your monitor model" name="mon_model"></crowd-input>
+						Now, please <b>maximum</b> your brower by the &#39;Maximize&#39; button on the top of your browers and then input the following information:<BR> <BR>
+						Your monitor model <crowd-input id="mon_model" name="mon_model"></crowd-input>
 					</p>
 				<table style="width:80%">
 					<tbody>
 						<tr>
-							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" label="Your monitor size in inch (diagonally)" max-length="3" name="mon_size"></crowd-input></td>
+							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor size in inch (diagonally) <crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" max-length="3" name="mon_size"></crowd-input></td>
 							<td>:</td>
-							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w" label="Your monitor resolution (Width)" max-length="5" name="mon_res_w"></crowd-input></td>
+							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Width)<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w"  max-length="5" name="mon_res_w"></crowd-input></td>
 							<td>x</td>
-							<td style="width:29%;padding-left:2%;padding-right:2%;"><crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_h" label="Your monitor resolution (Height)" max-length="5" name="mon_res_h"></crowd-input></td>
-							<td style="width:13%;padding-left:2%;padding-right:2%;"><crowd-modal link-text="How to know?" link-type="button">
+							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Height)<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_h" max-length="5" name="mon_res_h"></crowd-input></td>
+							<td style="width:13%;padding-left:2%;padding-right:2%;">.<crowd-modal link-text="How to know?" link-type="button">
 							<h2>How to know your monitor resolution</h2>
 							For <select name="os" onchange="osChange(this.value, 'hints1')"><option value="win">Windows</option><option value="mac">Mac</option></select>
 
@@ -174,7 +174,7 @@
 				</table>
 
 				<div id="mon_err" style="color:red">&nbsp;</div>
-				<button class="answer" id="monsetupButton" onclick="monInput()" style="width:100pt" type="button">Setup</button>
+				<button class="answer" id="monsetupButton" onclick="monInput()" style="width:auto" type="button">Setup</button>
 
 				<div id="setuplist">&nbsp;</div>
 
