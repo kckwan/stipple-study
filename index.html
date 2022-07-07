@@ -63,8 +63,8 @@
 	var SMALL_BAR_MOVE = 1;
 	var LARGE_BAR_MOVE = 10;
 	var fixedAnsQuestion = [2,5,7];
-	var methodnames = [ 'color', 'hex', 'hexinvert', 'lloyd', 'lloydinvert','dithering']; 
-	var sizelist = [ 3,4,5,6,8,12,17,24];
+	var methodnames = [ 'hex', 'hexinvert', 'lloyd', 'lloydinvert','dithering']; 
+	var sizelist = [ 3,4,5,6,7,8];
 	var orilist = [ 0, 15, 30, 45 ];
 	var intensityNum = 10;
 	var minIntensity = 20;
@@ -92,10 +92,10 @@
 					The time is recorded. Please answer the questions as soon as possible. <BR>
 					After answering one question, the image will disappear for 2 seconds for you to rest your eyes. <BR> 
 					There are breaks for you to rest after certain questions. <BR> 
-					Some questions may have default answers. Answering them wrongly may cause your answer unaccepted. <BR>
+					Some questions may have default answers. Answering them wrongly may lead you disqualified in this study.<BR>
 					If you have any questions, feel free to send me an email (kin-chung.kwan@uni-konstanz.de). <BR>
 					<BR>
-					Requirement: A 17+ inch monitor with 800x600 resolution or above.
+					Minimum Requirement: A 17+ inch monitor with 800x600 resolution or above.
 				</p>
 				<div class="example">
 					<p>Example Question</p>
@@ -135,17 +135,21 @@
 					<p style="width:80%">
 						To perform this online study, you need to tell us your your computer setting.<br />
 						Now, please <b>maximum</b> your brower by the &#39;Maximize&#39; button on the top of your browers and then input the following information:<BR> <BR>
-						Your monitor model <crowd-input id="mon_model" name="mon_model"></crowd-input>
+						<!--Your monitor model <crowd-input id="mon_model" name="mon_model"></crowd-input>-->
 					</p>
 				<table style="width:80%">
 					<tbody>
 						<tr>
-							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor size in inch (diagonally) <crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" max-length="3" name="mon_size"></crowd-input></td>
-							<td>:</td>
-							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Width)<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w"  max-length="5" name="mon_res_w"></crowd-input></td>
+							<!--<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor size in inch (diagonally) <crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" max-length="3" name="mon_size"></crowd-input></td>
+							<td>:</td>-->
+							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Width)
+							<div style="border:1px black solid">
+							<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w"  max-length="5" name="mon_res_w"></crowd-input></div></td>
 							<td>x</td>
-							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Height)<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_h" max-length="5" name="mon_res_h"></crowd-input></td>
-							<td style="width:13%;padding-left:2%;padding-right:2%;">.<crowd-modal link-text="How to know?" link-type="button">
+							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Height)
+							<div style="border:1px black solid">
+							<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_h" max-length="5" name="mon_res_h"></crowd-input></div></td>
+							<td style="width:13%;padding-left:2%;padding-right:2%;"><crowd-modal link-text="How to know?" link-type="button">
 							<h2>How to know your monitor resolution</h2>
 							For <select name="os" onchange="osChange(this.value, 'hints1')"><option value="win">Windows</option><option value="mac">Mac</option></select>
 
