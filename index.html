@@ -50,6 +50,7 @@
 		font-size: max(30px,1.2vw);
 	}
 	h1 { margin-top:100pt; font-size: max(48pt,2vw);}
+	
 </style>
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
 <script>
@@ -60,11 +61,12 @@
 	var MIN_MON_INCH = 17;
 	var MIN_MON_RES_W = 800;
 	var MIN_MON_RES_H = 600;
+	var USED_IMG_RES = 1000;
 	var SMALL_BAR_MOVE = 1;
 	var LARGE_BAR_MOVE = 10;
-	var fixedAnsQuestion = [2,5,7];
-	var methodnames = [ 'hex', 'hexinvert', 'lloyd', 'lloydinvert','dithering']; 
-	var sizelist = [ 3,4,5,6,7,8];
+	var fixedAnsQuestion = [5,13,17];
+	var methodnames = [ 'color', 'hex', 'hexinvert', 'lloyd', 'lloydinvert','dithering']; 
+	var sizelist = [ 3,4,5,6,8,12, 14];
 	var orilist = [ 0, 15, 30, 45 ];
 	var intensityNum = 10;
 	var minIntensity = 20;
@@ -143,7 +145,7 @@
 							<!--<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor size in inch (diagonally) <crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_size" max-length="3" name="mon_size"></crowd-input></td>
 							<td>:</td>-->
 							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Width)
-							<div style="border:1px black solid">
+							<div style="border:1px black solid;font-size:100pt">
 							<crowd-input allowed-pattern="[0-9]" auto-validate="true" error-message="Number only" id="mon_res_w"  max-length="5" name="mon_res_w"></crowd-input></div></td>
 							<td>x</td>
 							<td style="width:29%;padding-left:2%;padding-right:2%;">Your monitor resolution (Height)
@@ -387,7 +389,7 @@
 		<div class="page" id="errorPage">
 			<center>
 				<h2>The known answer are answered incorrectly<br />
-				Sorry, your answer cannot be accepted.</h2>
+				Sorry, your answers cannot be accepted.</h2>
 			</center>
 		</div>
 		
@@ -411,6 +413,7 @@
 
 
 <script>
+	var first_add = true;
 	var mon_model = '';
 	var mon_size = 0;
 	var mon_res_w = 0;
@@ -448,7 +451,6 @@
 	//start main function
 	initQuestions();
 	function initQuestions(){
-		window.addEventListener('resize',checkSetting);
 		document.getElementById('setupNextButton').disabled = true;
 		for(let i = 0; i < TASK_NUM; i++){
 			document.getElementById('questionlist').innerHTML += '<crowd-input id=\'answer' + i + '\' name=\'answer' + i + '\' label=\'Word/phrase 1\' style=\'display: none;\'></crowd-input>';
@@ -480,12 +482,16 @@
 	function setupBack(){  changePage('setup1','introduction'); 	}
 	function setupEnd(){   
 		if(monInput()){
+			if(first_add) window.addEventListener('resize',checkSetting);
+			first_add = false;
 			isScaleFixed = true;
 			changePage('setup1','setup2');	    	
 		}
 	}
 	function setupBack2(){ 
 		isScaleFixed = false;
+		window.removeEventListener('resize',checkSetting);
+		first_add = true;
 		changePage('setup2','setup1');			
 	}
 	function setupEnd2(){  changePage('setup2','setup3');			}
@@ -503,8 +509,8 @@
 	}
 	
 	function monInput(){
-		mon_model = document.getElementById('mon_model').value;
-		mon_size = parseInt(document.getElementById('mon_size').value);
+		//mon_model = document.getElementById('mon_model').value;
+		//mon_size = parseInt(document.getElementById('mon_size').value);
 		mon_res_w = parseInt(document.getElementById('mon_res_w').value);
 		mon_res_h = parseInt(document.getElementById('mon_res_h').value);
 		if (checkMonInputValue()){ 
@@ -518,25 +524,25 @@
 	}
 	
 	function calculateCreditCardSize(){
-		mon_ratio = mon_res_h / mon_res_w ;
+		//mon_ratio = mon_res_h / mon_res_w ;
 		// h = w * r
 		// h^2+ (h/r)^2 = c^2
 		// h^2 ( 1 + r ^2 ) / r ^2 = c^2
 		// h sqrt( 1 + r ^2 ) / r  = c
 		// h = r c / sqrt( 1 + r^2 )
-		mon_height_inch = mon_ratio * mon_size / Math.sqrt( 1.0 + mon_ratio * mon_ratio);
-		card_ratio = (3.375) / mon_height_inch;
-		img_res_h = Math.floor(mon_res_h * card_ratio);
+		//mon_height_inch = mon_ratio * mon_size / Math.sqrt( 1.0 + mon_ratio * mon_ratio);
+		//card_ratio = (3.375) / mon_height_inch;
+		//img_res_h = Math.floor(mon_res_h * card_ratio);
 		document.getElementById('img_res_h').value = img_res_h;
 		document.getElementById('bar').style.height = img_res_h + "px";
 	}
 	function checkMonInputValue(){
 		document.getElementById('mon_err').innerHTML = '';
-		if (mon_model.length == 0) document.getElementById('mon_err').innerHTML = 'The model cannot be empty';
-		if (isNaN(mon_size) || mon_size <= 0) document.getElementById('mon_err').innerHTML = 'The monitor size cannot be empty or negative';
+		//if (mon_model.length == 0) document.getElementById('mon_err').innerHTML = 'The model cannot be empty';
+		//if (isNaN(mon_size) || mon_size <= 0) document.getElementById('mon_err').innerHTML = 'The monitor size cannot be empty or negative';
 		if (isNaN(mon_res_w) || mon_res_w <= 0) document.getElementById('mon_err').innerHTML = 'The resolution cannot be empty or negative';
 		if (isNaN(mon_res_h) || mon_res_h <= 0) document.getElementById('mon_err').innerHTML = 'The resolution cannot be empty or negative';
-		if (mon_size < MIN_MON_INCH) document.getElementById('mon_err').innerHTML = 'We require a monitor with ' + MIN_MON_INCH+ ' inch or above.';
+		//if (mon_size < MIN_MON_INCH) document.getElementById('mon_err').innerHTML = 'We require a monitor with ' + MIN_MON_INCH+ ' inch or above.';
 		if (mon_res_w < MIN_MON_RES_W|| mon_res_h < MIN_MON_RES_H)document.getElementById('mon_err').innerHTML = 'We require a monitor with resolution more than '+MIN_MON_RES_W+' x ' + MIN_MON_RES_H;
 		/*if (!isRatioAccepted()) { 
 			document.getElementById('mon_err').innerHTML = 'This resolution is not accepted in our study.';
@@ -566,30 +572,34 @@
 			changePage(current_Page,'setup1');
 		}
 		document.getElementById('setupNextButton').disabled = true;
-	
 		var screenPixelRatio = (window.outerWidth) / window.innerWidth;
 		var isAtDefaultZoom = screenPixelRatio > 0.95 && screenPixelRatio <= 1.05;
 		var isResolutionOK = ( mon_res_w == screen.availWidth && mon_res_h == screen.availHeight )
 
-		document.getElementById('setuplist').innerHTML = '<h2>Checklist</h2>';
-		document.getElementById('setuplist').innerHTML += ("<p><b>Detected screen resolution: </b>" + screen.availWidth + " x " + screen.availHeight
-		+ (isResolutionOK ? " <span style='color:green'>✔</span>"
-		: " <i class=\"material-icons\" style='color:red' >report_problem</i>"
-		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> The detected screen resolution is different from your input. It can be caused by some scaling features of your operation system or graphic hardware driver. Please disable those scaling of native output in your operating system. <BR><BR> For Windows: <BR>" +
-			" 1. Right click an empty space in your desktop.  <BR>" +
-			" 2. Select &quot;Display settings&quot; in the menu. <BR>" +
-			" 3. Look for \"Scale and layout\" <BR>" +
-			"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/window_zoom.png' /> <BR> <BR>" +
-		"For Mac: <BR>" +
-			"1. Click the Mac icon at the top-left corner.<BR>" +
-			"2 .Click Display in the tag.<BR>" +
-			"3. Select \"Best for display\"<BR>" +
-			"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/mac_zoom.jpg' /><BR>" +
-		"</crowd-modal>"));
-		document.getElementById('setuplist').innerHTML += ("<p><b>Browser Zoom: </b>" + (screenPixelRatio * 100.0).toFixed(2)
-		+ (isAtDefaultZoom ? "% <span style='color:green'>✔</span>"
-		: "% <i class=\"material-icons\" style='color:red' >report_problem</i>"
-		+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> Zoom in/out is detected. Please set the zoom of your brower to 100%. You can do so by clicking the setting of your browers. <BR> Example for Chrome : <BR> <img src='https://kckwan-stippling-data.s3.amazonaws.com/img/browser.png'/></crowd-modal>"));
+		//if(current_Page == 'setup1')
+		if(true){
+			document.getElementById('setuplist').innerHTML = '<h2>Checklist</h2>';
+			document.getElementById('setuplist').innerHTML += ("<p><b>Detected screen resolution: </b>" + screen.availWidth + " x " + screen.availHeight
+			+ (isResolutionOK ? " <span style='color:green'>✔</span>"
+			: " <i class=\"material-icons\" style='color:red' >report_problem</i>"
+			+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> The detected screen resolution is different from your input. It can be caused by some scaling features of your operation system or graphic hardware driver. Please disable those scaling of native output in your operating system. <BR><BR> For Windows: <BR>" +
+				" 1. Right click an empty space in your desktop.  <BR>" +
+				" 2. Select &quot;Display settings&quot; in the menu. <BR>" +
+				" 3. Look for \"Scale and layout\" <BR>" +
+				"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/window_zoom.png' /> <BR> <BR>" +
+			"For Mac: <BR>" +
+				"1. Click the Mac icon at the top-left corner.<BR>" +
+				"2 .Click Display in the tag.<BR>" +
+				"3. Select \"Best for display\"<BR>" +
+				"<img src='https://kckwan-stippling-data.s3.amazonaws.com/img/mac_zoom.jpg' /><BR>" +
+			"</crowd-modal>"));
+			document.getElementById('setuplist').innerHTML += ("<p><b>Browser Zoom: </b>" + (screenPixelRatio * 100.0).toFixed(2)
+			+ (isAtDefaultZoom ? "% <span style='color:green'>✔</span>"
+			: "% <i class=\"material-icons\" style='color:red' >report_problem</i>"
+			+ "<crowd-modal link-text = \"Info\" link-type = \"button\"> Zoom in/out is detected. Please set the zoom of your brower to 100%. You can do so by clicking the setting of your browers. <BR> Example for Chrome : <BR> <img src='https://kckwan-stippling-data.s3.amazonaws.com/img/browser.png'/></crowd-modal>"));
+		}else{
+			document.getElementById('setuplist').innerHTML = "";
+		}
 		
 		if(isAtDefaultZoom && isResolutionOK){
 			document.getElementById('setupNextButton').disabled = false;
@@ -718,7 +728,7 @@
 			);
 			//if(i != fixedAnsQuestion[0] && i != fixedAnsQuestion[1] && i != fixedAnsQuestion[2]){	
 			if(!isFixed){
-				methodIds[idA] = Math.floor(Math.random() * (methodnames.length));	//stippling img
+				methodIds[idA] = Math.floor(Math.random() * (methodnames.length - 1 )) + 1;	//stippling img
 				methodIds[idB] = 0;	//color img
 				intensity[idA] = (Math.floor(Math.random() * intensityStep)) * intensityNum + minIntensity;
 				intensity[idB] = (Math.floor(Math.random() * intensityStep)) * intensityNum + minIntensity;
@@ -730,6 +740,7 @@
 			}
 			sizeIds[idA] = sizelist[Math.floor(Math.random() * sizelist.length)];
 			sizeIds[idB] = sizelist[Math.floor(Math.random() * sizelist.length)];
+			if(methodIds[idA] == methodnames.length - 1) sizeIds[idA] = sizelist[0]; // for dithering
 			oriIds[idA] = ( isHex(methodIds[idA]) ) ? orilist[Math.floor(Math.random() * orilist.length)]: 0;
 			oriIds[idB] = ( isHex(methodIds[idB]) ) ? orilist[Math.floor(Math.random() * orilist.length)]: 0;
 		}
@@ -745,6 +756,7 @@
 		var sign = 1;
 		
 		//pixel of circle center
+		var isInverted = inverted(methodIds[next_question_index]);
 		//if (isInverted) ctx.fillStyle="white";
 		//else ctx.fillStyle="black";
 		let cx = Math.round(ptx);
@@ -757,9 +769,6 @@
 			for (let y = -end; y <= end; ++y) {
 				py = cy + y;            //Move from center 
 				if (py < 0 || py > img_res_h - 1) continue;
-				
-				
-				//
 				//cv::Vec3b* p = (cv::Vec3b*)(img.ptr(py)) + px;
 				//if ((*p) == c) continue;
 				let outter_corner_x = (x >= 0) ? px + 0.5 : px - 0.5;
@@ -771,16 +780,16 @@
 				if (norm(ptx,pty, outter_corner_x, outter_corner_y) < radius){
 					//let color = ctx.getImageData(px,py, 1, 1).data;
 					//console.log('a');
-					//var r,g,b;
-					/*if (isInverted){
-						ctx.fillStyle="white";
-						//r = g = b = 255;
+					/*var r,g,b;
+					if (isInverted){
+						//ctx.fillStyle="white";
+						r = g = b = 255;
 						//sign = -1;
 					}else{ 
-						ctx.fillStyle="black";
-						//r = g = b = 0;
-					}*/
-					/*if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
+						//ctx.fillStyle="black";
+						r = g = b = 0;
+					}
+					if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
 						error_diffusion += sign;
 					else*/
 						ctx.fillRect( px, py, 1, 1 );   //inside circle
@@ -790,6 +799,7 @@
 					)
 				{
 					let a = Math.min(1.0,Math.max(0.0,area(px - 0.5, px + 0.5, py - 0.5, py + 0.5, ptx, pty, radius)));
+					if(a >= 0.5) ctx.fillRect( px, py, 1, 1 ); 
 					//if(isAA){
 						
 						/*if (!isInverted){
@@ -817,32 +827,33 @@
 							}
 						}*/
 					//}else
-					{
+					//{
 						//No AA
-						//let color = ctx.getImageData(px,py, 1, 1).data;
+						/*let color = ctx.getImageData(px,py, 1, 1).data;
 						//error_diffusion = 0;
 						if(a >= 0.5){
 						//if(error_diffusion + a >= 0.5){
-							//var r,g,b;
-							/*if (isInverted){
-								ctx.fillStyle="white";
-								//r = g = b = 255;
+							var r,g,b;
+							if (isInverted){
+								//ctx.fillStyle="white";
+								r = g = b = 255;
 								//sign = -1;
 							}else{ 
-								ctx.fillStyle="black";
-								//r = g = b = 0;
-							}*/
-							//if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
-								//error_diffusion += a * sign;
-							//else
-							{
-								//error_diffusion -= (1.0 - a) * sign;	//new draw
-								ctx.fillRect( px, py, 1, 1 ); 
+								//ctx.fillStyle="black";
+								r = g = b = 0;
 							}
-						}/*else{
-							error_diffusion += a * sign;;
+							if(color[0] == r && color[1] == g && color[2] == b)	//overdraw
+								error_diffusion += a * sign;
+							else
+							{
+								error_diffusion -= (1.0 - a) * sign;	//new draw*/
+								//ctx.fillRect( px, py, 1, 1 ); 
+								
+							/*}
+						}else{
+							error_diffusion += a * sign;
 						}*/
-					}
+					//}
 				}
 			}
 		}
@@ -887,10 +898,10 @@
 		setTimeout( startDisplay , REST_TIME);
 		
 		//Create images
-		console.log(methodIds[next_question_index * 2]);						 
-		console.log(methodIds[next_question_index * 2 + 1]);						 
-		console.log(intensity[next_question_index * 2]);						 
-		console.log(intensity[next_question_index * 2 + 1]);						 
+		console.log("Methods:" + methodnames[methodIds[next_question_index * 2]]);						 
+		console.log("Methods:" + methodnames[methodIds[next_question_index * 2 + 1]]);						 
+		console.log("Intensity:" + intensity[next_question_index * 2]);						 
+		console.log("Intensity:" + intensity[next_question_index * 2 + 1]);						 
 		document.getElementById('questionTest').innerHTML = "Question " + (answered_question_num+1) + " / " + TASK_NUM + "<BR> Which one is brighter?";
 		draw('A',next_question_index * 2);
 		draw('B',next_question_index * 2 + 1);
@@ -916,7 +927,7 @@
 		drawCompleted[getCanvasNum(canvasName)] = true;
 	}
 	function drawDithering(canvasName,next_question_index){
-		var size = sizeIds[next_question_index];					
+		var size = Math.round(sizeIds[next_question_index] / USED_IMG_RES * img_res_h);					
 		/*
 		//One block of pattern to copy
 		var p_size_2 = PATTERN_SIZE * PATTERN_SIZE;
@@ -962,7 +973,7 @@
 			}
 		}
 		var average_color = avgColor(ctx);
-		console.log(average_color);						 
+		console.log("AVG Color" + average_color);						 
 		document.getElementById('average_color' + canvasName + Math.floor(next_question_index/2)).value = average_color;
 		document.getElementById('image' + canvasName).appendChild(canvas)
 		drawCompleted[getCanvasNum(canvasName)] = true;
@@ -978,7 +989,7 @@
 			+ String(sizeIds[next_question_index]) + '_'
 			+ String(oriIds[next_question_index])
 			+ '.txt';
-		console.log(next_question_index);	
+		console.log("Q:" + next_question_index);	
 		console.log(filenames);		
 		request.open('GET', filenames, true);
 		request.responseType = 'blob';
@@ -1003,7 +1014,7 @@
 				//var f = new Float32Array(e.target.result.slice(methodIds[next_question_index] < 2? 20:16));
 				var f = new Float32Array(e.target.result.slice(20));
 				var num = Number(i[0]).toString(10);
-				var size = Number(i[3]).toString(10);
+				var size = Number(i[3]).toString(10)  / USED_IMG_RES * img_res_h;
 				
 				
 				var canvas = document.createElement('canvas');
@@ -1026,10 +1037,10 @@
 				}
 				
 				
-				//error_diffusion = 0;
-				//var end_size =  / 2;
-				//var drawn = new Array(end_size);
-				//drawn.fill(0);
+				error_diffusion = 0;
+				var end_size = f.length / 2;
+				var drawn = new Array(end_size);
+				drawn.fill(0);
 				//float dist = (f[0]-f[2]);
 				//double small_angle = acos(dist / radius);
 				//double small_circle_area = radius * radius * small_angle / 2; // r^2 pi * small_angle / 2pi
@@ -1037,15 +1048,15 @@
 				//double exceed_circle_area = small_circle_area - small_triangle_area;
 				
 				for (let id = 0; id < f.length; id+=2){
-					//var nid = Math.floor(Math.random() * end_size);
+					var nid = id;//Math.floor(Math.random() * end_size);
 					//while(drawn[nid]) nid = (nid + 1) % end_size;
-					drawCircle(ctx,Number(f[id]), Number(f[id + 1]), size);
+					drawCircle(ctx,Number(f[nid])  / USED_IMG_RES * img_res_h, Number(f[nid + 1])  / USED_IMG_RES * img_res_h, size);
 					//if (dist < radius) error_diffusion -= exceed_circle_area * 12;
 					//drawn[nid] = 1;
 				}
 				
 				var average_color = avgColor(ctx);
-				console.log(average_color);						 
+				console.log("AVG : " + average_color);						 
 				document.getElementById('average_color' + canvasName + Math.floor(next_question_index/2)).value = average_color;
 				document.getElementById('image' + canvasName).appendChild(canvas)
 				drawCompleted[getCanvasNum(canvasName)] = true;
